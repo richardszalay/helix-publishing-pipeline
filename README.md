@@ -1,11 +1,13 @@
-This is proof of concept prototype for seamlessly integrating the Helix solution structure with the Web Publishing Pipeline feature of .NET and Visual Studio. Specifically, it attempts to merge Helix modules from lower layers (foundation, features) with the top layer (project) when it comes to publishing.
+This is proof of concept prototype for seamlessly integrating the Sitecore Helix solution structure with the Web Publishing Pipeline feature of .NET and Visual Studio. Specifically, it attempts to merge Helix modules from lower layers (foundation, features) with the top layer (project) when it comes to publishing.
 
-The desire for this project comes from Helix itself. While the Helix recommendation states that 
+The desire for this project comes from Helix itself. While the Helix recommendation states that features should be self contained in their own project, no packaging/deployment functionality is included in the reference implementation and web publishing in Visual Studio doesn't have native support for web project references.
+
+This system assumes that you intend to package/deploy all modules with the project, as opposed to individually which you can do already. For the short term it will also assume that _all_ modules will ship with _all_ projects, as opposed to only shipping _dependent_ modules.
 
 Design principles:
 
 * Adding these targets to a Project should provide as much functionality as possible (ie. sensible defaults)
-* Stick to WPP integration points wherever possible
+* Everything should work with any publishing method (Web Deploy, Package, File System). Stick to WPP integration points wherever possible. 
 * Everything should be extensible
 * Everything should be test driven
 
