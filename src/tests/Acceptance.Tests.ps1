@@ -9,6 +9,8 @@ $fixtures = @{
     
 }
 
+$count = 1
+
 Describe "Default fixture" {
 
     Context "building package with default settings" {
