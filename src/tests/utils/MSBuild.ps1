@@ -79,6 +79,8 @@ function Invoke-MSBuild
     #$stdout = $p.StandardOutput.ReadToEnd()
     $stderr = $p.StandardError.ReadToEnd()
 
+    Write-Host $stderr
+
     if ($p.ExitCode -ne 0) {
         throw $stderr
     }
