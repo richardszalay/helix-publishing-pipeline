@@ -1,0 +1,113 @@
+<Project>
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)'=='*Undefined*'">$(MSBuildProjectDirectory)\..\..\</SolutionDir>
+    <HelixModuleSourcePath></HelixModuleSourcePath>
+  </PropertyGroup>
+
+  <!-- Conventions -->
+  <PropertyGroup>
+    <HelixModuleFeaturesDirectory Condition="'$(HelixModuleFeaturesDirectory)' == ''">Features</HelixModuleFeaturesDirectory>
+    <HelixModuleFoundationDirectory Condition="'$(HelixModuleFoundationDirectory)' == ''">Foundation</HelixModuleFoundationDirectory>
+    <HelixModuleSourceDirectory Condition="'$(HelixModuleSourceDirectory)' == ''"></HelixModuleSourceDirectory>
+    <HelixModuleWebContentDirectory Condition="'$(HelixModuleWebContentDirectory)' == ''"></HelixModuleWebContentDirectory>
+  </PropertyGroup>
+
+  <Target Name="GatherDependentHelixModules">
+    <ItemGroup>
+      <HelixModulePaths Include="$([System.IO.Directory]::GetDirectories(`$(SolutionDir)$(HelixModuleFoundationDirectory)`))" />
+      <HelixModulePaths Include="$([System.IO.Directory]::GetDirectories(`$(SolutionDir)$(HelixModuleFeaturesDirectory)`))" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Content -->
+  <PropertyGroup>
+    <PipelineCollectFilesPhaseDependsOn>
+      $(PipelineCollectFilesPhaseDependsOn);
+      CollectFilesFromHelixModules;
+    </PipelineCollectFilesPhaseDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CollectFilesFromHelixModulesMode Condition="'$(CollectFilesFromHelixModules)'==''">FileSystemWhitelist</CollectFilesFromHelixModulesMode>
+    <CollectFilesFromHelixModulesDependsOn>
+      $(CollectFilesFromHelixModulesDependsOn);
+      GatherDependentHelixModules;
+      CollectFilesFromHelixModules$(CollectFilesFromHelixModulesMode);
+    </CollectFilesFromHelixModulesDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CollectFilesFromHelixModules" DependsOnTargets="$(CollectFilesFromHelixModulesDependsOn)">
+    <ItemGroup>
+      <FilesForPackagingFromProject Include="@(FilesForPackagingFromHelixModules)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- File System (Whitelist) implementation of CollectFilesFromHelixModules -->
+  <Target Name="CollectFilesFromHelixModulesFileSystemWhitelist">
+    <!-- TODO: Figure out how to do this dynamically from an item list of wildcard matches -->
+    <PropertyGroup>
+      <_HelixModuleContentPath>$(HelixModuleSourceDirectory)$(HelixModuleWebContentDirectory)</_HelixModuleContentPath>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\App_Config\**\*')</HelixModuleContentInclude>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.cshtml')</HelixModuleContentInclude>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.vbhtml')</HelixModuleContentInclude>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.css')</HelixModuleContentInclude>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.js')</HelixModuleContentInclude>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.svg')</HelixModuleContentInclude>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.png')</HelixModuleContentInclude>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.jpg')</HelixModuleContentInclude>
+      <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.jpeg')</HelixModuleContentInclude>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_HelixModuleContentSpecs Include="@(HelixModulePaths -> '%(FullPath)$(HelixModuleSourceDirectory)\**\*')">
+        <HelixModulePath>%(FullPath)$(HelixModuleSourceDirectory)</HelixModulePath>
+      </_HelixModuleContentSpecs>
+    </ItemGroup>
+
+    <CreateItem Include="@(_HelixModuleContentSpecs)" PreserveExistingMetadata="true">
+      <Output TaskParameter="Include" ItemName="_HelixModuleContent"/>
+    </CreateItem>
+
+    <ItemGroup>
+      <_HelixModuleExcludedContent Include="@(_HelixModuleContent)" Exclude="$(HelixModuleContentInclude)" />
+      <_HelixModuleIncludedContent Include="@(_HelixModuleContent)" Exclude="@(_HelixModuleExcludedContent)" />
+
+      <FilesForPackagingFromHelixModules Include="@(_HelixModuleIncludedContent)">
+        <DestinationRelativePath>$([MSBuild]::MakeRelative('%(_HelixModuleIncludedContent.HelixModulePath)', '%(FullPath)'))</DestinationRelativePath>
+        <FromTarget>CollectFilesFromHelixModuleContent</FromTarget>
+      </FilesForPackagingFromHelixModules>
+    </ItemGroup>
+  </Target>
+
+  <!-- Parameters -->
+  <PropertyGroup>
+    <ImportParametersFilesDependsOn>
+      $(ImportParametersFilesDependsOn);
+      GatherHelixParameterXMLFiles
+    </ImportParametersFilesDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GatherHelixParameterXMLFilesDependsOn>
+      $(GatherHelixParameterXMLFilesDependsOn);
+      GatherDependentHelixModules
+    </GatherHelixParameterXMLFilesDependsOn>
+  </PropertyGroup>
+  <Target Name="GatherHelixParameterXMLFiles" DependsOnTargets="$(GatherHelixParameterXMLFilesDependsOn)">
+    <ItemGroup>
+      <HelixModuleProjectPaths Include="@(HelixModulePaths -> '%(FullPath)\$(HelixModuleSourcePath)')" />
+      <HelixModuleParameterFiles Include="@(HelixModuleProjectPaths -> '%(FullPath)Parameters.xml')" />
+      <ParametersXMLFiles Include="@(HelixModuleParameterFiles)" Condition="'%(HelixModuleParameterFiles.Identity)' != ''" />
+    </ItemGroup>
+  </Target>
+  
+  <PropertyGroup>
+    <DisableProjectReferenceDeployOnBuild Condition="'$(DisableProjectReferenceDeployOnBuild)'==''">true</DisableProjectReferenceDeployOnBuild>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(DisableProjectReferenceDeployOnBuild)'=='true'">
+    <_ProjectReferenceTmp Include="@(ProjectReference)" />
+    <ProjectReference Remove="@(ProjectReference)" />
+    <ProjectReference Include="@(_ProjectReferenceTmp)">
+      <GlobalPropertiesToRemove>DeployOnBuild</GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
