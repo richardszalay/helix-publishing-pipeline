@@ -6,3 +6,6 @@ bin/
 
 *.dll
 *.config
+
+tools/
+ps-results.xml

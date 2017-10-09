@@ -20,11 +20,33 @@ function Add-MSBuildAssembly
     Add-Type -Path $assembly
 }
 
+function Get-VSWherePath
+{
+    $localPath = "$PSScriptRoot\tools\vswhere.exe"
+
+    if (-not (Test-Path $localPath))
+    {
+        mkdir (Split-Path $localPath -Parent) -ErrorAction SilentlyContinue
+
+        Invoke-WebRequest -OutFile $localPath -Uri "https://github.com/Microsoft/vswhere/releases/download/2.2.3/vswhere.exe" | Out-Null
+    }
+
+    return $localPath
+}
+
 function Get-MSBuildExePath
 {
     param(
         $Version = "15.0"
     )
+
+    $path = & (Get-VSWherePath) -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+    if ($path) {
+      $path = join-path $path 'MSBuild\15.0\Bin\MSBuild.exe'
+      if (test-path $path) {
+        return $path
+      }
+    }
 
     return "MSBuild.exe"
 }
@@ -41,6 +63,8 @@ function Invoke-MSBuild
     $propertyArgs = Format-MSBuildCommandLineProperties $Properties
 
     $arguments = @($propertyArgs) + @((Resolve-Path $Project)) + "/v:q" + "/nologo" + "/t:Clean;Build"
+
+    Write-Verbose "Invoking MSBuild: $msBuildExe $arguments"
 
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     $pinfo.FileName = $msBuildExe
