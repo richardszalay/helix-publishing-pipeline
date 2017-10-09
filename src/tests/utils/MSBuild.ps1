@@ -59,8 +59,6 @@ function Invoke-MSBuild
         throw $stderr
     }
 
-    Set-Content "tmp.txt" $stdout
-
     return $stdout
 
 }

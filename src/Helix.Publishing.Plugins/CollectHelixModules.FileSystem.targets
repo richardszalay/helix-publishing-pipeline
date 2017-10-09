@@ -1,0 +1,8 @@
+<Project>
+  <Target Name="CollectHelixModulesFileSystem">
+    <ItemGroup>
+      <HelixModulePaths Include="$([System.IO.Directory]::GetDirectories(`$(SolutionDir)$(HelixModuleFoundationDirectory)`))" />
+      <HelixModulePaths Include="$([System.IO.Directory]::GetDirectories(`$(SolutionDir)$(HelixModuleFeaturesDirectory)`))" />
+    </ItemGroup>
+  </Target>
+</Project>
