@@ -26,7 +26,7 @@ function Get-VSWherePath
 
     if (-not (Test-Path $localPath))
     {
-        mkdir (Split-Path $localPath -Parent) -ErrorAction SilentlyContinue
+        mkdir (Split-Path $localPath -Parent) -ErrorAction SilentlyContinue | Out-Null
 
         Invoke-WebRequest -OutFile $localPath -Uri "https://github.com/Microsoft/vswhere/releases/download/2.2.3/vswhere.exe" | Out-Null
     }
