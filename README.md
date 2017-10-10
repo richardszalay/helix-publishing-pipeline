@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/y0reigvxgct4vmgq/branch/master?svg=true)](https://ci.appveyor.com/project/richardszalay/helix-publishing-targets/branch/master)
+
 This is proof of concept prototype for seamlessly integrating the Sitecore Helix solution structure with the Web Publishing Pipeline feature of .NET and Visual Studio. Specifically, it attempts to merge Helix modules from lower layers (foundation, features) with the top layer (project) when it comes to publishing.
 
 The desire for this project comes from Helix itself. While the Helix recommendation states that features should be self contained in their own project, no packaging/deployment functionality is included in the reference implementation and web publishing in Visual Studio doesn't have native support for web project references.
