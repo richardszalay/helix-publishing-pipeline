@@ -3,7 +3,6 @@ $psversionTable | out-string | write-host
 properties {
   $testFilePattern = "$PSScriptRoot\..\src\targets\tests"
   $toolsDir = "$PSScriptRoot\.tools"
-  $nugetPath = "$toolsDir\nuget.exe"
   $tasksSolutionPath = "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln"
 
   if ($env:CI) {
