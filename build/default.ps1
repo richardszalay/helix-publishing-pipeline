@@ -8,8 +8,10 @@ properties {
 
   if ($env:CI) {
     $xunitPath = "$env:xunit20\xunit.console"
+    $nugetPath = "nuget.exe"
   } else {
     $xunitPath = "$PSScriptRoot\..\src\tasks\packages\xunit.runner.console.2.3.0\tools\net452\xunit.console.exe"
+    $nugetPath = "$toolsDir\nuget.exe"
   }
 }
 
@@ -26,9 +28,7 @@ task GetNuget {
 }
 
 task Restore -depends GetNuGet {
-  if (-not $env:CI) {
-    & $nugetPath restore $tasksSolutionPath
-  }
+  & $nugetPath restore $tasksSolutionPath
 }
 
 task BuildTasks -depends Restore {
@@ -36,7 +36,7 @@ task BuildTasks -depends Restore {
 }
 
 task TestTasks -depends BuildTasks {
-  & $xunitPath "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\Debug\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit tasks-test-results.xml
+  & $xunitPath "$PSScriptRoot\..\src\targets\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\Debug\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit tasks-test-results.xml
 }
 
 task Test -depends TestTasks,TestTargets
