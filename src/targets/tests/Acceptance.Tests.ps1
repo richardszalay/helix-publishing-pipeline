@@ -74,5 +74,17 @@ Describe "Default fixture" {
             
             $result | Should Be $null
         }
+
+        It "should include Web.Helix.config transforms from feature modules" {
+            $result = Select-Xml -Xml $webConfigXml -XPath "//appSettings/add[@key='Feature1.ConfigKey']/@value"
+            
+            $result | Should Be "Feature1.ConfigValue"
+        }
+
+        It "should include Web.Helix.config transforms from foundation modules" {
+            $result = Select-Xml -Xml $webConfigXml -XPath "//appSettings/add[@key='Foundation1.ConfigKey']/@value"
+            
+            $result | Should Be "Foundation1.ConfigValue"
+        }
     }
 }

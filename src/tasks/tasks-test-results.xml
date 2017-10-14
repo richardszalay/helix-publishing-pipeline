@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<test-results name="Test results" errors="0" inconclusive="0" ignored="0" invalid="0" not-run="0" date="2017-10-13" time="19:56:54" total="3" failures="0" skipped="0">
+  <environment os-version="unknown" platform="unknown" cwd="unknown" machine-name="unknown" user="unknown" user-domain="unknown" nunit-version="xUnit.net 2.3.0.3820" clr-version="64-bit .NET 4.0.30319.42000 [collection-per-class, parallel (4 threads)]" />
+  <culture-info current-culture="unknown" current-uiculture="unknown" />
+  <test-suite type="Assemblies" name="xUnit.net Tests" executed="True" success="True" result="Success" time="0.451">
+    <results>
+      <test-suite type="Assembly" executed="True" name="C:\Users\richa\dev\helix-build\src\tasks\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\Debug\RichardSzalay.Helix.Publishing.Tasks.Tests.DLL" result="Success" success="True" time="0.451">
+        <results>
+          <test-suite type="TestCollection" executed="True" name="Test collection for RichardSzalay.Helix.Publishing.Tasks.Tests.MergeXmlTransformsTests" result="Success" success="True" time="0.277">
+            <results>
+              <test-case name="RichardSzalay.Helix.Publishing.Tasks.Tests.MergeXmlTransformsTests.ValidTransforms_MergedRootElementChildren" executed="True" result="Success" success="True" time="0.2564701" />
+              <test-case name="RichardSzalay.Helix.Publishing.Tasks.Tests.MergeXmlTransformsTests.NoTransforms_ReturnsFalse" executed="True" result="Success" success="True" time="0.0051782" />
+              <test-case name="RichardSzalay.Helix.Publishing.Tasks.Tests.MergeXmlTransformsTests.InvalidTransforms_ReturnsFalse" executed="True" result="Success" success="True" time="0.015485" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

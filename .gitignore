@@ -8,4 +8,6 @@ bin/
 
 
 tools/
-ps-results.xml
+
+build/*.xml
+build/.tools/
