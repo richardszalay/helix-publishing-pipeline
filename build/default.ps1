@@ -4,7 +4,7 @@ properties {
   $testFilePattern = "$PSScriptRoot\..\src\targets\tests"
   $toolsDir = "$PSScriptRoot\.tools"
   $nugetPath = "$toolsDir\nuget.exe"
-  $tasksSolutionPath = "$PSScriptRoot\..\src\tasks"
+  $tasksSolutionPath = "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln"
 
   if ($env:CI) {
     $xunitPath = "$env:xunit20\xunit.console"
@@ -36,7 +36,7 @@ task BuildTasks -depends Restore {
 }
 
 task TestTasks -depends BuildTasks {
-  & $xunitPath "$PSScriptRoot\..\src\targets\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\Debug\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit tasks-test-results.xml
+  & $xunitPath "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\Debug\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit tasks-test-results.xml
 }
 
 task Test -depends TestTasks,TestTargets
