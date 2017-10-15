@@ -7,10 +7,10 @@ properties {
 
   if ($env:CI) {
     $xunitPath = "$env:xunit20\xunit.console"
-    $nugetPath = "nuget.exe"
   } else {
     $xunitPath = "$PSScriptRoot\..\src\tasks\packages\xunit.runner.console.2.3.0\tools\net452\xunit.console.exe"
     $nugetPath = "$toolsDir\nuget.exe"
+    $buildTasksDeps = @("Restore")
   }
 }
 
@@ -27,10 +27,11 @@ task GetNuget {
 }
 
 task Restore -depends GetNuGet {
+  & $nugetPath help # To show version
   & $nugetPath restore $tasksSolutionPath
 }
 
-task BuildTasks -depends Restore {
+task BuildTasks -depends $buildTasksDeps {
   & msbuild "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln" "/P:Configuration=Release" "/m" "/v:m"
 }
 
