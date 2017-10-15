@@ -1,6 +1,7 @@
 $psversionTable | out-string | write-host
 
 properties {
+  $buildConfiguration = "Release"
   $testFilePattern = "$PSScriptRoot\..\src\targets\tests"
   $toolsDir = "$PSScriptRoot\.tools"
   $tasksSolutionPath = "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln"
@@ -32,11 +33,11 @@ task Restore -depends GetNuGet {
 }
 
 task BuildTasks -depends $buildTasksDeps {
-  & msbuild "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln" "/P:Configuration=Release" "/m" "/v:m"
+  & msbuild "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln" "/P:Configuration=$buildConfiguration" "/m" "/v:m"
 }
 
 task TestTasks -depends BuildTasks {
-  & $xunitPath "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\Debug\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit tasks-test-results.xml
+  & $xunitPath "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\$buildConfiguration\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit tasks-test-results.xml
 }
 
 task Test -depends TestTasks,TestTargets
