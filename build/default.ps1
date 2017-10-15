@@ -1,5 +1,7 @@
 $psversionTable | out-string | write-host
 
+. "$PSScriptRoot\..\src\targets\tests\utils\MSBuild.ps1"
+
 properties {
   $buildConfiguration = "Release"
   $testFilePattern = "$PSScriptRoot\..\src\targets\tests"
@@ -33,7 +35,7 @@ task Restore -depends GetNuGet {
 }
 
 task BuildTasks -depends $buildTasksDeps {
-  & msbuild "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln" "/P:Configuration=$buildConfiguration" "/m" "/v:m"
+  & (Get-MSBuildExePath) "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln" "/P:Configuration=$buildConfiguration" "/m" "/v:m"
 }
 
 task TestTasks -depends BuildTasks {
