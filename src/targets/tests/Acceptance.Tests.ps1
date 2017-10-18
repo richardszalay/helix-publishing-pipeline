@@ -1,3 +1,4 @@
+. "$PSScriptRoot/utils/WebConfig.ps1"
 . "$PSScriptRoot/utils/MSBuild.ps1"
 . "$PSScriptRoot/utils/MSDeploy.ps1"
 
@@ -11,7 +12,7 @@ $fixtures = @{
 
 $count = 1
 
-Describe "Default fixture" {
+Describe "Turnkey" {
 
     Context "building package with default settings" {
         $projectPath = $fixtures.default.Project1
@@ -58,33 +59,23 @@ Describe "Default fixture" {
         }
 
         It "should include Web.config from the packaged project" {
-            $result = Select-Xml -Xml $webConfigXml -XPath "//appSettings/add[@key='HelixProject']/@value"
-
-            $result | Should Be "Sample.Web"
+            (Get-WebConfigAppSetting $webConfigXml "HelixProject") | Should Be "Sample.Web"
         }
 
         It "should not include include Web.config from any feature modules" {
-            $result = Select-Xml -Xml $webConfigXml -XPath "//appSettings/add[@key='HelixBuild.Feature1']/@value"
-            
-            $result | Should Be $null
+            (Get-WebConfigAppSetting $webConfigXml "HelixBuild.Feature1") | Should Be $null
         }
 
         It "should not include include Web.config from any foundation modules" {
-            $result = Select-Xml -Xml $webConfigXml -XPath "//appSettings/add[@key='HelixBuild.Foundation1']/@value"
-            
-            $result | Should Be $null
+            (Get-WebConfigAppSetting $webConfigXml "HelixBuild.Foundation1") | Should Be $null
         }
 
         It "should include Web.Helix.config transforms from feature modules" {
-            $result = Select-Xml -Xml $webConfigXml -XPath "//appSettings/add[@key='Feature1.ConfigKey']/@value"
-            
-            $result | Should Be "Feature1.ConfigValue"
+            (Get-WebConfigAppSetting $webConfigXml "Feature1.ConfigKey") | Should Be "Feature1.ConfigValue"
         }
 
         It "should include Web.Helix.config transforms from foundation modules" {
-            $result = Select-Xml -Xml $webConfigXml -XPath "//appSettings/add[@key='Foundation1.ConfigKey']/@value"
-            
-            $result | Should Be "Foundation1.ConfigValue"
+            (Get-WebConfigAppSetting $webConfigXml "Foundation1.ConfigKey") | Should Be "Foundation1.ConfigValue"
         }
     }
 }
