@@ -1,0 +1,13 @@
+<Project>
+  <!-- Disable downstream publishing -->
+  <PropertyGroup>
+    <DisableProjectReferenceDeployOnBuild Condition="'$(DisableProjectReferenceDeployOnBuild)'==''">true</DisableProjectReferenceDeployOnBuild>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(DisableProjectReferenceDeployOnBuild)'=='true'">
+    <_ProjectReferenceTmp Include="@(ProjectReference)" />
+    <ProjectReference Remove="@(ProjectReference)" />
+    <ProjectReference Include="@(_ProjectReferenceTmp)">
+      <GlobalPropertiesToRemove>DeployOnBuild</GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
