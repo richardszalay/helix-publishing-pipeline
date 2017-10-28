@@ -5,7 +5,7 @@ bin/
 **/packages/
 
 *.dll
-
+*.pdb
 
 tools/
 
