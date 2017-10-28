@@ -25,14 +25,15 @@
 
   <!-- Content -->
   <PropertyGroup>
-    <PipelineCollectFilesPhaseDependsOn>
+   <CollectFilesFromHelixModules Condition="'$(CollectFilesFromHelixModules)' == ''">true</CollectFilesFromHelixModules>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CollectFilesFromHelixModules)' == 'true'">
+  <PipelineCollectFilesPhaseDependsOn>
       $(PipelineCollectFilesPhaseDependsOn);
       CollectFilesFromHelixModules;
     </PipelineCollectFilesPhaseDependsOn>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <CollectFilesFromHelixModulesMethod Condition="'$(CollectFilesFromHelixModules)'==''">FileSystemWhitelist</CollectFilesFromHelixModulesMethod>
+    <CollectFilesFromHelixModulesMethod Condition="'$(CollectFilesFromHelixModulesMethod)'==''">FileSystemWhitelist</CollectFilesFromHelixModulesMethod>
     <CollectFilesFromHelixModulesDependsOn>
       $(CollectFilesFromHelixModulesDependsOn);
       CollectHelixModules;
