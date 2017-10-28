@@ -69,23 +69,23 @@
 
   <!-- Web.config Transforms -->
   <PropertyGroup>
-    <MergeHelixModulesWebConfigTransforms Condition="'$(MergeHelixModulesWebConfigTransforms)' == ''">true</MergeHelixModulesWebConfigTransforms>
+    <MergeHelixModuleWebConfigTransforms Condition="'$(MergeHelixModuleWebConfigTransforms)' == ''">true</MergeHelixModuleWebConfigTransforms>
   </PropertyGroup>
 
   <UsingTask TaskName="RichardSzalay.Helix.Publishing.Tasks.MergeXmlTransforms" 
              AssemblyFile="$(MSBuildThisFileDirectory)RichardSzalay.Helix.Publishing.Tasks.dll"
-             Condition="'$(MergeHelixModulesWebConfigTransforms)'=='true'"
+             Condition="'$(MergeHelixModuleWebConfigTransforms)'=='true'"
              />
 
   <PropertyGroup>
-    <PreTransformWebConfigDependsOn Condition="'$(MergeHelixModulesWebConfigTransforms)'=='true'">
+    <PreTransformWebConfigDependsOn Condition="'$(MergeHelixModuleWebConfigTransforms)'=='true'">
       $(PreTransformWebConfigDependsOn);
-      MergeHelixModulesWebConfigTransforms
+      MergeHelixModuleWebConfigTransforms
     </PreTransformWebConfigDependsOn>
-    <MergeHelixModulesWebConfigTransformsDependsOn>
-      $(MergeHelixModulesWebConfigTransformsDependsOn);
+    <MergeHelixModuleWebConfigTransformsDependsOn>
+      $(MergeHelixModuleWebConfigTransformsDependsOn);
       CollectHelixModuleWebConfigTransforms
-    </MergeHelixModulesWebConfigTransformsDependsOn>
+    </MergeHelixModuleWebConfigTransformsDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -99,7 +99,7 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="MergeHelixModulesWebConfigTransforms" DependsOnTargets="$(MergeHelixModulesWebConfigTransformsDependsOn)">
+  <Target Name="MergeHelixModuleWebConfigTransforms" DependsOnTargets="$(MergeHelixModuleWebConfigTransformsDependsOn)">
 
 
     <ItemGroup>
@@ -139,5 +139,6 @@
     </ProjectReference>
   </ItemGroup>
 
+  <!-- Plugins -->
   <Import Project="Helix.Publishing.Plugins\*.targets" />
 </Project>
