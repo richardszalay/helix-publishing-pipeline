@@ -51,18 +51,39 @@ function Get-MSBuildExePath
     return "MSBuild.exe"
 }
 
+function Invoke-MSBuildWithOutput
+{
+    param(
+        $Project,
+        [hashtable]$Properties,
+        [string]$TargetName,
+        [Parameter(ParameterSetName='ItemOutput')]$OutputItem
+    )
+
+    $projectFile = (Resolve-Path $Project)
+    $outputDataFile = (New-TemporaryFile).FullName
+    
+    if ($OutputItem) {
+        $projectFile = New-MSBuildTargetsWrapper -TargetsFile $projectFile -TargetName $TargetName -OutputItem $OutputItem -OutputBuffer $outputDataFile
+    }
+
+    Invoke-MSBuild $projectFile -TargetName "Test$TargetName" -Properties $Properties + @{"IsWrapperInstance"="true"} | Out-NUll
+
+    return @(Get-Content $outputDataFile)
+}
 
 function Invoke-MSBuild
 {
     param(
         $Project,
-        [hashtable]$Properties
+        [hashtable]$Properties,
+        $TargetName = "Clean;Build"
     )
 
     $msBuildExe = Get-MSBuildExePath
     $propertyArgs = Format-MSBuildCommandLineProperties $Properties
 
-    $arguments = @($propertyArgs) + @((Resolve-Path $Project)) + "/v:q" + "/nologo" + "/t:Clean;Build"
+    $arguments = @($propertyArgs) + (Resolve-Path $Project) + "/v:q" + "/nologo" + "/t:$TargetName"
 
     Write-Verbose "Invoking MSBuild: $msBuildExe $arguments"
 
@@ -95,24 +116,42 @@ function Format-MSBuildCommandLineProperties
         [hashtable]$Properties
     )
 
+    if (-not $Properties) {
+        return @()
+    }
+
     return @($Properties.GetEnumerator() | % { "/P:$($_.Key)=$($_.Value)" })
 }
 
-function ConvertTo-Dictionary
+function New-MSBuildTargetsWrapper
 {
     param(
-        [hashtable]$InputObject
+        $TargetsFile,
+        $TargetName,
+        $OutputItem,
+        $OutputBuffer
     )
 
-    $outputObject = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+    $targetsDir = Split-Path -Path $TargetsFile -Parent
+    $targetsFilename = Split-Path -Path $TargetsFile -Leaf
 
-    foreach ($entry in $InputObject.GetEnumerator())
-    {
-        $key = [string]$entry.Key
-        $value = [string]$entry.Value
+    $tempFile = Join-Path $targetsDir ([System.IO.Path]::ChangeExtension($targetsFilename, ".test.targets"))
 
-        $outputObject.Add($key, $value)
-    }
+    $returnsValue = "@($OutputItem)"
 
-    return $outputObject
+    Set-Content $tempFile "
+        <Project>
+            <Import Project=`"$TargetsFile`" />
+
+            <Target Name=`"Test$TargetName`" DependsOnTargets=`"$TargetName`">
+                <ItemGroup>
+                    <_TestOutputLines Include=`"$returnsValue`" />
+                </ItemGroup>
+
+                <WriteLinesToFile File=`"$OutputBuffer`" Lines=`"@(_TestOutputLines)`" Overwrite=`"true`" />
+            </Target>
+        </Project>
+    "
+
+    return $tempFile
 }
