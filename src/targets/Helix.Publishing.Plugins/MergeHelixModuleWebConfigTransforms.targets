@@ -26,8 +26,8 @@
 
   <Target Name="CollectHelixModuleWebConfigTransforms">
     <ItemGroup>
-      <HelixModuleWebConfigTransforms Include="@(HelixModulePaths -> '%(FullPath)$(HelixModuleSourceDirectory)\$(HelixModuleWebConfigTransformFileNamePrefix).config')" />
-      <HelixModuleWebConfigTransforms Include="@(HelixModulePaths -> '%(FullPath)$(HelixModuleSourceDirectory)\$(HelixModuleWebConfigTransformFileNamePrefix).$(Configuration).config')" />
+      <HelixModuleWebConfigTransforms Include="@(HelixModulePaths -> '%(RootDir)%(Directory)\$(HelixModuleWebConfigTransformFileNamePrefix).config')" />
+      <HelixModuleWebConfigTransforms Include="@(HelixModulePaths -> '%(RootDir)%(Directory)\$(HelixModuleWebConfigTransformFileNamePrefix).$(Configuration).config')" />
     </ItemGroup>
   </Target>
 
