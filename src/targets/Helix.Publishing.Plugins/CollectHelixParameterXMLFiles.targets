@@ -14,8 +14,7 @@
   </PropertyGroup>
   <Target Name="CollectHelixParameterXMLFiles" DependsOnTargets="$(CollectHelixParameterXMLFilesDependsOn)">
     <ItemGroup>
-      <HelixModuleProjectPaths Include="@(HelixModulePaths -> '%(FullPath)\$(HelixModuleSourceDirectory)')" />
-      <HelixModuleParameterFiles Include="@(HelixModuleProjectPaths -> '%(FullPath)Parameters.xml')" />
+      <HelixModuleParameterFiles Include="@(HelixModulePaths -> '%(RootDir)%(Directory)Parameters.xml')" />
       <ParametersXMLFiles Include="@(HelixModuleParameterFiles)" Condition="'%(HelixModuleParameterFiles.Identity)' != ''" />
     </ItemGroup>
   </Target>

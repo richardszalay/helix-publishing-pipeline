@@ -3,21 +3,21 @@
   <Target Name="CollectFilesFromHelixModulesFileSystemWhitelist">
     <!-- TODO: Figure out how to do this dynamically from an item list of wildcard matches -->
     <PropertyGroup>
-        <_HelixModuleContentPath>$(HelixModuleSourceDirectory)$(HelixModuleWebContentDirectory)</_HelixModuleContentPath>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\App_Config\**\*')</HelixModuleContentInclude>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.cshtml')</HelixModuleContentInclude>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.vbhtml')</HelixModuleContentInclude>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.css')</HelixModuleContentInclude>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.js')</HelixModuleContentInclude>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.svg')</HelixModuleContentInclude>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.png')</HelixModuleContentInclude>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.jpg')</HelixModuleContentInclude>
-        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(FullPath)$(_HelixModuleContentPath)\**\*.jpeg')</HelixModuleContentInclude>
+        <_HelixModuleContentPath>$(HelixModuleWebContentDirectory)</_HelixModuleContentPath>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\App_Config\**\*')</HelixModuleContentInclude>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\**\*.cshtml')</HelixModuleContentInclude>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\**\*.vbhtml')</HelixModuleContentInclude>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\**\*.css')</HelixModuleContentInclude>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\**\*.js')</HelixModuleContentInclude>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\**\*.svg')</HelixModuleContentInclude>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\**\*.png')</HelixModuleContentInclude>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\**\*.jpg')</HelixModuleContentInclude>
+        <HelixModuleContentInclude>$(HelixModuleContentInclude);@(HelixModulePaths -> '%(RootDir)%(Directory)$(_HelixModuleContentPath)\**\*.jpeg')</HelixModuleContentInclude>
     </PropertyGroup>
 
     <ItemGroup>
-        <_HelixModuleContentSpecs Include="@(HelixModulePaths -> '%(FullPath)$(HelixModuleSourceDirectory)\**\*')">
-        <HelixModulePath>%(FullPath)$(HelixModuleSourceDirectory)</HelixModulePath>
+        <_HelixModuleContentSpecs Include="@(HelixModulePaths -> '%(RootDir)%(Directory)\**\*')">
+            <HelixModulePath>%(RootDir)%(Directory)</HelixModulePath>
         </_HelixModuleContentSpecs>
     </ItemGroup>
 
@@ -30,8 +30,8 @@
         <_HelixModuleIncludedContent Include="@(_HelixModuleContent)" Exclude="@(_HelixModuleExcludedContent)" />
 
         <FilesForPackagingFromHelixModules Include="@(_HelixModuleIncludedContent)">
-        <DestinationRelativePath>$([MSBuild]::MakeRelative('%(_HelixModuleIncludedContent.HelixModulePath)', '%(FullPath)'))</DestinationRelativePath>
-        <FromTarget>CollectFilesFromHelixModuleContent</FromTarget>
+            <DestinationRelativePath>$([MSBuild]::MakeRelative('%(_HelixModuleIncludedContent.HelixModulePath)', '%(FullPath)'))</DestinationRelativePath>
+            <FromTarget>CollectFilesFromHelixModuleContent</FromTarget>
         </FilesForPackagingFromHelixModules>
     </ItemGroup>
   </Target>

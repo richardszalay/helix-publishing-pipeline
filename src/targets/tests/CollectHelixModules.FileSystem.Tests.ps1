@@ -22,11 +22,11 @@ Describe "CollectHelixModules.FileSystem" {
         $moduleNames = $result | ForEach-Object { Split-Path $_ -Leaf }
 
         It "should include direct dependencies" {
-            $moduleNames -contains "HelixBuild.Feature1" | Should Be $true
+            $moduleNames -contains "HelixBuild.Feature1.csproj" | Should Be $true
         }
 
         It "should include indirect dependencies" {
-            $moduleNames -contains "HelixBuild.Foundation1" | Should Be $true
+            $moduleNames -contains "HelixBuild.Foundation1.csproj" | Should Be $true
         }
     }
 }
