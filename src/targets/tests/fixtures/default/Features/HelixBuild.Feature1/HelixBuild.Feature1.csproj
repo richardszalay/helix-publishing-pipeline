@@ -61,7 +61,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_Config\Include\HelixBuild.Feature1.config" />
+    <Content Include="App_Config\Include\HelixBuild.Feature1.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -71,7 +71,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Parameters.xml" />
+    <None Include="Parameters.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

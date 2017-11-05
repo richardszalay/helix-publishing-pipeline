@@ -71,7 +71,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Parameters.xml" />
+    <None Include="Parameters.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
