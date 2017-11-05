@@ -1,0 +1,22 @@
+<Project>
+  <!-- Content item (ie csproj) implementation of CollectFilesFromHelixModules -->
+  <Target Name="CollectFilesFromHelixModulesContent" DependsOnTargets="CollectHelixModules">
+    <MSBuild
+        Projects="@(HelixModulePaths)"
+        Targets="ContentFilesProjectOutputGroup"
+        BuildInParallel="$(BuildInParallel)"
+        Properties="%(_MSBuildProjectReferenceExistent.SetConfiguration); %(_MSBuildProjectReferenceExistent.SetPlatform)"
+        >
+
+      <Output TaskParameter="TargetOutputs" ItemName="_FilesForPackagingFromHelixProjects" />
+
+    </MSBuild>
+
+    <ItemGroup>
+        <FilesForPackagingFromHelixModules Include="@(_FilesForPackagingFromHelixProjects)" 
+                                           Condition="'%(TargetPath)' != 'Web.config'">
+            <DestinationRelativePath>%(TargetPath)</DestinationRelativePath>
+        </FilesForPackagingFromHelixModules>
+    </ItemGroup>
+  </Target>
+</Project>
