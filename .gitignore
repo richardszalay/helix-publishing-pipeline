@@ -11,3 +11,5 @@ tools/
 
 build/*.xml
 build/.tools/
+
+*.test.targets
