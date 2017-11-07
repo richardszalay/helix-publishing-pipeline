@@ -1,4 +1,12 @@
 <Project>
+  <!-- Conventions -->
+  <PropertyGroup>
+    <HelixModuleFeaturesDirectory Condition="'$(HelixModuleFeaturesDirectory)' == ''">Features</HelixModuleFeaturesDirectory>
+    <HelixModuleFoundationDirectory Condition="'$(HelixModuleFoundationDirectory)' == ''">Foundation</HelixModuleFoundationDirectory>
+    <HelixModuleSourceDirectory Condition="'$(HelixModuleSourceDirectory)' == ''"></HelixModuleSourceDirectory>
+    <HelixModuleWebContentDirectory Condition="'$(HelixModuleWebContentDirectory)' == ''"></HelixModuleWebContentDirectory>
+  </PropertyGroup>
+
   <PropertyGroup>
     <HelixModuleProjectExtension Condition="'$(HelixModuleProjectExtension)' == ''">csproj</HelixModuleProjectExtension>
   </PropertyGroup>
