@@ -4,17 +4,9 @@
     <SolutionDir Condition="'$(SolutionDir)'=='*Undefined*'">$(MSBuildProjectDirectory)\..\..\</SolutionDir>
   </PropertyGroup>
 
-  <!-- Conventions -->
-  <PropertyGroup>
-    <HelixModuleFeaturesDirectory Condition="'$(HelixModuleFeaturesDirectory)' == ''">Features</HelixModuleFeaturesDirectory>
-    <HelixModuleFoundationDirectory Condition="'$(HelixModuleFoundationDirectory)' == ''">Foundation</HelixModuleFoundationDirectory>
-    <HelixModuleSourceDirectory Condition="'$(HelixModuleSourceDirectory)' == ''"></HelixModuleSourceDirectory>
-    <HelixModuleWebContentDirectory Condition="'$(HelixModuleWebContentDirectory)' == ''"></HelixModuleWebContentDirectory>
-  </PropertyGroup>
-
   <!-- CollectHelixModules -->
   <PropertyGroup>
-    <CollectHelixModulesMethod>FileSystem</CollectHelixModulesMethod>
+    <CollectHelixModulesMethod>ProjectDependencies</CollectHelixModulesMethod>
     <CollectHelixModulesDependsOn>
       $(CollectHelixModulesDependsOn);
       CollectHelixModules$(CollectHelixModulesMethod);
@@ -33,7 +25,7 @@
       $(PipelineCollectFilesPhaseDependsOn);
       CollectFilesFromHelixModules;
     </PipelineCollectFilesPhaseDependsOn>
-    <CollectFilesFromHelixModulesMethod Condition="'$(CollectFilesFromHelixModulesMethod)'==''">FileSystemWhitelist</CollectFilesFromHelixModulesMethod>
+    <CollectFilesFromHelixModulesMethod Condition="'$(CollectFilesFromHelixModulesMethod)'==''">Content</CollectFilesFromHelixModulesMethod>
     <CollectFilesFromHelixModulesDependsOn>
       $(CollectFilesFromHelixModulesDependsOn);
       CollectHelixModules;

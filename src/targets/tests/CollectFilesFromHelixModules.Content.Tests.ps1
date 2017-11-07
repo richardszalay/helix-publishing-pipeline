@@ -23,7 +23,6 @@ Describe "CollectFilesFromHelixModules.Content" {
 
         It "should include content from module projects" {
             $result -contains "App_Config\Include\HelixBuild.Feature1.config" | Should Be $true
-            $result -contains "App_Config\Include\HelixBuild.Foundation1.config" | Should Be $true
         }
     }
 }
