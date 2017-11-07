@@ -19,8 +19,6 @@ Describe "CollectFilesFromHelixModules.Content" {
 
         $result = Invoke-MSBuildWithOutput -Project $projectPath -TargetName "CollectFilesFromHelixModulesContent" -OutputItem "FilesForPackagingFromHelixModules -> '%(DestinationRelativePath)'"
 
-        Write-Host $result
-
         It "should include content from module projects" {
             $result -contains "App_Config\Include\HelixBuild.Feature1.config" | Should Be $true
         }
