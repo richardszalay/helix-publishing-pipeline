@@ -37,7 +37,7 @@
     <ItemGroup>
       <_ProjectWebConfigTransform Include="@(WebConfigsToTransform)" Condtion="'%(WebConfigsToTransform.Filename)%(WebConfigsToTransform.Extension)'=='$(ProjectConfigFileName)'" />
       <_WebConfigTransformsToMerge Include="@(HelixModuleWebConfigTransforms)" Condition="Exists(%(FullPath))" />
-      <_WebConfigTransformsToMerge Include="@(_ProjectWebConfigTransform->'%(TransformFile)')" Condition="Exists(%(_WebConfigTransformsToMerge.TransformFile))" />
+      <_WebConfigTransformsToMerge Include="@(_ProjectWebConfigTransform->'%(TransformFile)')" Condition="Exists(%(_ProjectWebConfigTransform.TransformFile))" />
 
     </ItemGroup>
 

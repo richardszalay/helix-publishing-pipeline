@@ -19,6 +19,7 @@ Describe "Turnkey" {
         $projectDir = Split-Path $projectPath -Parent
 
         Invoke-MSBuild -Project $projectPath -Properties @{
+            "Configuration" = "Debug";
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
             "DeployAsIisApp" = "false";
@@ -67,6 +68,10 @@ Describe "Turnkey" {
 
         It "should not include include Web.config from indirect module dependencies" {
             (Get-WebConfigAppSetting $webConfigXml "HelixBuild.Foundation1") | Should Be $null
+        }
+
+        It "should include standard Web.config transforms from the packaged project" {
+            (Get-WebConfigAppSetting $webConfigXml "Project.ConfigKey") | Should Be "Project.ConfigValue"
         }
 
         It "should include Web.Helix.config transforms from feature modules" {
