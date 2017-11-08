@@ -124,11 +124,7 @@ function ConvertFrom-MSDeployParametersXML
         $Xml
     )
 
-    #Write-Host ([xml]$Xml).GetType()
-
     $parameters = $Xml.output.parameters.parameter
-
-    Write-Host $Xml
 
     $keyedParameters = @{}
     $parameters | ForEach-Object {

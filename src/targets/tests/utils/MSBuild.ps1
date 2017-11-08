@@ -67,7 +67,7 @@ function Invoke-MSBuildWithOutput
         $projectFile = New-MSBuildTargetsWrapper -TargetsFile $projectFile -TargetName $TargetName -OutputItem $OutputItem -OutputBuffer $outputDataFile
     }
 
-    Invoke-MSBuild $projectFile -TargetName "Test$TargetName" -Properties $Properties + @{"IsWrapperInstance"="true"} | Out-NUll
+    Invoke-MSBuild $projectFile -TargetName "Test$TargetName" -Properties $Properties + @{"IsWrapperInstance"="true"} | Out-Null
 
     return @(Get-Content $outputDataFile)
 }
@@ -99,8 +99,6 @@ function Invoke-MSBuild
     $p.WaitForExit()
     #$stdout = $p.StandardOutput.ReadToEnd()
     $stderr = $p.StandardError.ReadToEnd()
-
-    Write-Host $stderr
 
     if ($p.ExitCode -ne 0) {
         throw $stderr

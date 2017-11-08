@@ -17,7 +17,7 @@ Describe "Turnkey" {
     Context "building package with default settings" {
         $projectPath = $fixtures.default.Project1
         $projectDir = Split-Path $projectPath -Parent
-
+        
         Invoke-MSBuild -Project $projectPath -Properties @{
             "Configuration" = "Debug";
             "DeployOnBuild" = "true";
