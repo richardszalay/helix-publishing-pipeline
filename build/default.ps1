@@ -7,6 +7,7 @@ properties {
   $testFilePattern = "$PSScriptRoot\..\src\targets\tests"
   $toolsDir = "$PSScriptRoot\.tools"
   $tasksSolutionPath = "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln"
+  $artifactDir = "$PSScriptRoot\..\bin"
 
   if ($env:CI) {
     $xunitPath = "$env:xunit20\xunit.console"
@@ -39,21 +40,35 @@ task BuildTasks -depends $buildTasksDeps {
 }
 
 task TestTasks -depends BuildTasks {
-  & $xunitPath "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\$buildConfiguration\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit tasks-test-results.xml
+  $testResultsPath = Join-Path $artifactDir tasks-test-results.xml
+  & $xunitPath "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\$buildConfiguration\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit $testResultsPath
 }
 
 task Test -depends TestTasks,TestTargets
 
-task TestTargets {
-  $res = Invoke-Pester -Script @{ Path = $testFilePattern } -OutputFormat NUnitXml -OutputFile .\ps-results.xml -PassThru
+task TestTargets -depends CreateArtifactDir {
+
+  $testResultsPath = Join-Path $artifactDir ps-results.xml
+
+  $res = Invoke-Pester -Script @{ Path = $testFilePattern } -OutputFormat NUnitXml -OutputFile $testResultsPath -PassThru
   
   if ($env:APPVEYOR_JOB_ID)
   {
     $wc = New-Object 'System.Net.WebClient'
-    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\ps-results.xml))
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $testResultsPath))
   }
 
   if ($res.FailedCount -gt 0) { 
       throw "$($res.FailedCount) tests failed."
+  }
+}
+
+task CreateArtifactDir {
+  mkdir $artifactDir -Force
+}
+
+task Pack -depends BuildTasks, CreateArtifactDir {
+  Get-ChildItem "$PSScriptRoot\..\src\*.nuspec" | Foreach-Object {
+    & $nugetPath pack $_.FullName -Version 0.1.1 -OutputDirectory $artifactDir
   }
 }
