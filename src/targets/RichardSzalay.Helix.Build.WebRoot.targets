@@ -1,7 +1,3 @@
 <Project>
-  <PropertyGroup>
-    <ExcludeWebConfigFromPackage>true</ExcludeWebConfigFromPackage>
-  </PropertyGroup>
-
   <Import Project="$(MSBuildThisFileDirectory)RichardSzalay.Helix.Build.Common.targets" />
 </Project>
