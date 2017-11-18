@@ -1,0 +1,12 @@
+<Project>
+  <ItemGroup>
+    <ExcludeFromPackageFiles Include="Web.config">
+        <FromTarget>HelixTargets</FromTarget>
+      </ExcludeFromPackageFiles>
+      <ExcludeFromPackageFiles Include="Views/Web.config">
+        <FromTarget>HelixTargets</FromTarget>
+      </ExcludeFromPackageFiles>
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)RichardSzalay.Helix.Build.Common.targets" />
+</Project>

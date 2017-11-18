@@ -12,13 +12,14 @@ $fixtures = @{
 
 $count = 1
 
-Describe "Turnkey" {
+Describe "Module configuration" {
 
     Context "building package with default settings" {
         $projectPath = $fixtures.default.Project1
         $projectDir = Split-Path $projectPath -Parent
         
         Invoke-MSBuild -Project $projectPath -Properties @{
+            "HelixTargetsConfiguration" = "Module";
             "Configuration" = "Debug";
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
@@ -31,8 +32,6 @@ Describe "Turnkey" {
         $packageParameterNames = $packageParameters.Keys
 
         $packageFiles = Get-MSDeployPackageFiles $packageFilename
-
-        $webConfigXml = [xml](Get-MSDeployPackageFileContent -PackagePath $packageFilename -FilePath "Web.config")
 
         It "should include web deploy parameters from the packaged project" {
             $packageParameterNames -contains "Project-Parameter1" | Should Be $true
@@ -58,28 +57,8 @@ Describe "Turnkey" {
             $packageFiles -contains "App_Config\Include\HelixBuild.Foundation1.config" | Should Be $false
         }
 
-        It "should include Web.config from the packaged project" {
-            (Get-WebConfigAppSetting $webConfigXml "HelixProject") | Should Be "Sample.Web"
-        }
-
-        It "should not include include Web.config from direct module dependencies" {
-            (Get-WebConfigAppSetting $webConfigXml "HelixBuild.Feature1") | Should Be $null
-        }
-
-        It "should not include include Web.config from indirect module dependencies" {
-            (Get-WebConfigAppSetting $webConfigXml "HelixBuild.Foundation1") | Should Be $null
-        }
-
-        It "should include standard Web.config transforms from the packaged project" {
-            (Get-WebConfigAppSetting $webConfigXml "Project.ConfigKey") | Should Be "Project.ConfigValue"
-        }
-
-        It "should include Web.Helix.config transforms from feature modules" {
-            (Get-WebConfigAppSetting $webConfigXml "Feature1.ConfigKey") | Should Be "Feature1.ConfigValue"
-        }
-
-        It "should not include Web.Helix.config transforms from indirect module dependencies" {
-            (Get-WebConfigAppSetting $webConfigXml "Foundation1.ConfigKey") | Should Be $null
+        It "should not include Web.config from the packaged project" {
+            $packageFiles -contains "Web.config" | Should Be $false
         }
     }
 }
