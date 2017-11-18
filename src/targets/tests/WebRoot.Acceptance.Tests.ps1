@@ -19,7 +19,7 @@ Describe "WebRoot configuration" {
         $projectDir = Split-Path $projectPath -Parent
         
         Invoke-MSBuild -Project $projectPath -Properties @{
-            "HelixTargetsConfiguration" = "WebRoot";
+            "HelixTargetsConfiguration" = "WebRoot"; # This is only supported by the test fixture
             "Configuration" = "Debug";
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";

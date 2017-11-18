@@ -66,9 +66,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Helix.config" />
-    <None Include="Web.Release.config">
+    <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Parameters.xml" />
