@@ -19,7 +19,7 @@ Describe "Module configuration" {
         $projectDir = Split-Path $projectPath -Parent
         
         Invoke-MSBuild -Project $projectPath -Properties @{
-            "HelixTargetsConfiguration" = "Module";
+            "HelixTargetsConfiguration" = "Module"; # This is only supported by the test fixture
             "Configuration" = "Debug";
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
@@ -59,6 +59,11 @@ Describe "Module configuration" {
 
         It "should not include Web.config from the packaged project" {
             $packageFiles -contains "Web.config" | Should Be $false
+        }
+
+        # THe default pipeline excludes config transforms, even if they are marked as Content
+        It "should not prevent transforms from being excluded" {
+            $packageFiles -contains "Web.Release.config" | Should Be $false
         }
     }
 }
