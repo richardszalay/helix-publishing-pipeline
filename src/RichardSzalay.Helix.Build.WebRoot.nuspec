@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>RichardSzalay.Helix.Build.WebRoot</id>
+        <version>0.1</version>
+        <description>Includes dependent web projects in the ASP.NET Publishing Pipeline</description>
+        <authors>Richard Szalay</authors>
+    </metadata>
+    
+    <files>
+        <file src="targets\**\*.targets" exclude="targets\tests\**\*.targets" target="build" />
+        <file src="targets\*.dll" target="build" />
+    </files>
+</package>
