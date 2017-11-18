@@ -15,7 +15,7 @@
   <Target Name="CollectHelixParameterXMLFiles" DependsOnTargets="$(CollectHelixParameterXMLFilesDependsOn)">
     <ItemGroup>
       <HelixModuleParameterFiles Include="@(HelixModulePaths -> '%(RootDir)%(Directory)Parameters.xml')" />
-      <ParametersXMLFiles Include="@(HelixModuleParameterFiles)" Condition="'%(HelixModuleParameterFiles.Identity)' != ''" />
+      <ParametersXMLFiles Include="@(HelixModuleParameterFiles)" Condition="'%(HelixModuleParameterFiles.Identity)' != '' and Exists(%(HelixModuleParameterFiles.FullPath))" />
     </ItemGroup>
   </Target>
 </Project>
