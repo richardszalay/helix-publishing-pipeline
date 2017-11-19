@@ -14,9 +14,10 @@ properties {
     $packageVersion = $env:APPVEYOR_BUILD_VERSION
   } else {
     $xunitPath = "$PSScriptRoot\..\src\tasks\packages\xunit.runner.console.2.3.0\tools\net452\xunit.console.exe"
-    $nugetPath = "$toolsDir\nuget.exe"
     $buildTasksDeps = @("Restore")
   }
+
+  $nugetPath = "$toolsDir\nuget.exe"
 }
 
 task default -depends Test,Pack
