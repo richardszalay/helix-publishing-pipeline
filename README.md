@@ -19,7 +19,11 @@ Essentially:
 
 # Installation
 
-Import either `RichardSzalay.Helix.Publishing.WebRoot.targets` or `RichardSzalay.Helix.Publishing.Module.targets` at the bottom of your project file.
+`PM> Install-Package RichardSzalay.Helix.Publishing.WebRoot`
+
+or
+
+`PM> Install-Package RichardSzalay.Helix.Publishing.Module`
 
 # Roadmap
 
