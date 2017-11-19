@@ -7,3 +7,5 @@ build_script:
     Import-Module .\build\psake\psake.psd1
 
     Invoke-psake .\build\default.ps1
+artifacts:
+- path: bin\*.nupkg
