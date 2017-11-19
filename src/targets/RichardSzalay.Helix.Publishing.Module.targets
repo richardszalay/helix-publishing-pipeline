@@ -8,5 +8,5 @@
       </ExcludeFromPackageFiles>
   </ItemGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)RichardSzalay.Helix.Build.Common.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)RichardSzalay.Helix.Publishing.Common.targets" />
 </Project>
