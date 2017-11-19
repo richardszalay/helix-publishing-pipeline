@@ -3,5 +3,7 @@ image: Visual Studio 2017
 build_script:
 - ps: >-
     nuget restore src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln
+
     Import-Module .\build\psake\psake.psd1
+
     Invoke-psake .\build\default.ps1
