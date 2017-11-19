@@ -40,7 +40,7 @@ task BuildTasks -depends $buildTasksDeps {
   & (Get-MSBuildExePath) "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln" "/P:Configuration=$buildConfiguration" "/m" "/v:m"
 }
 
-task TestTasks -depends BuildTasks {
+task TestTasks -depends CreateArtifactDir,BuildTasks {
   $testResultsPath = Join-Path $artifactDir tasks-test-results.xml
   & $xunitPath "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.Tests\bin\$buildConfiguration\RichardSzalay.Helix.Publishing.Tasks.Tests.dll" -nunit $testResultsPath
 }
