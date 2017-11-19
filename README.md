@@ -19,7 +19,7 @@ Essentially:
 
 # Installation
 
-Import either `RichardSzalay.Helix.Build.WebRoot.targets` or `RichardSzalay.Helix.Build.Module.targets` at the bottom of your project file.
+Import either `RichardSzalay.Helix.Publishing.WebRoot.targets` or `RichardSzalay.Helix.Publishing.Module.targets` at the bottom of your project file.
 
 # Roadmap
 

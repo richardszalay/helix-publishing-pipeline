@@ -1,0 +1,3 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)RichardSzalay.Helix.Publishing.Common.targets" />
+</Project>

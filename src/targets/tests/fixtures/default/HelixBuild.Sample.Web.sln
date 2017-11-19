@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixBuild.Foundation1", "F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{B16694E7-9887-4B25-8225-B96DD9AA67CA}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\RichardSzalay.Helix.Build.Common.targets = ..\..\..\RichardSzalay.Helix.Build.Common.targets
+		..\..\..\RichardSzalay.Helix.Publishing.Common.targets = ..\..\..\RichardSzalay.Helix.Publishing.Common.targets
 	EndProjectSection
 EndProject
 Global
