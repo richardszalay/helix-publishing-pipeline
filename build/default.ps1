@@ -11,6 +11,7 @@ properties {
 
   if ($env:CI) {
     $xunitPath = "$env:xunit20\xunit.console"
+    $packageVersion = $env:APPVEYOR_BUILD_VERSION
   } else {
     $xunitPath = "$PSScriptRoot\..\src\tasks\packages\xunit.runner.console.2.3.0\tools\net452\xunit.console.exe"
     $nugetPath = "$toolsDir\nuget.exe"
@@ -18,7 +19,7 @@ properties {
   }
 }
 
-task default -depends Test
+task default -depends Test,Pack
 
 task GetNuget {
   if (-not (Test-Path $nugetPath)) {
@@ -67,8 +68,8 @@ task CreateArtifactDir {
   mkdir $artifactDir -Force
 }
 
-task Pack -depends BuildTasks, CreateArtifactDir {
+task Pack -depends GetNuget,BuildTasks,CreateArtifactDir {
   Get-ChildItem "$PSScriptRoot\..\src\*.nuspec" | Foreach-Object {
-    & $nugetPath pack $_.FullName -Version 0.1.1 -OutputDirectory $artifactDir
+    & $nugetPath pack $_.FullName -Version $packageVersion -OutputDirectory $artifactDir
   }
 }
