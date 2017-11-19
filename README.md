@@ -14,7 +14,7 @@ This project simplifies the publishing of Sitecore Helix solutions by integratin
 Essentially:
 
 1. The project in your solution that will publish the Web.config (if any) should use the WebRoot configuration
-2. Any modules (eg. Helix Project's) that you want to publish
+2. Any modules (eg. Helix Project's) that you want to publish should use the Module configuration
 3. Any modules that don't need to be published (or the built in publishing is sufficient) can remain as-is.
 
 # Installation
