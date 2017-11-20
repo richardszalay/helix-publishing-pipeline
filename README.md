@@ -1,6 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/y0reigvxgct4vmgq/branch/master?svg=true)](https://ci.appveyor.com/project/richardszalay/helix-publishing-targets/branch/master)
 
-This project simplifies the publishing of Sitecore Helix solutions by integrating the web project _dependencies_ into the standard ASP.NET publishing pipeline.
+This project simplifies the publishing of multi-project Sitecore Helix solutions by integrating the web project _dependencies_ into the standard ASP.NET publishing pipeline.
 
 # Features
 
