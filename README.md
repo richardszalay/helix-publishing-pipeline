@@ -8,10 +8,10 @@ There's nothing to configure. Adding the appropriate NuGet package automatically
 
 | Feature | Enabled by default |
 | ------ | ------ |
-| Content in dependent projects are included in the publish | Yes |
+| Content in dependent projects is included in the publish | Yes |
 | Web Deploy parameters (Parameters.xml) from dependent projects are included in the publish | Yes |
 | Web.config transforms (Web.Helix.config) from dependent projects are applied to project's Web.config | WebRoot package only |
-| Automatic exclusion of Web.config and Views/Web.config from publish | Module package only |
+| Web.config and Views/Web.config are excluded from publish | Module package only |
 | Publishing does not cause dependent projects to also independently publish  | Yes |
 
 Essentially:
