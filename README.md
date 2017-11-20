@@ -4,6 +4,8 @@ This project simplifies the publishing of Sitecore Helix solutions by integratin
 
 # Features
 
+There's nothing to configure. Adding the appropriate NuGet package automatically enables the following behavior to the standard ASP.NET "Publish" process:
+
 | Feature | Enabled by default |
 | ------ | ------ |
 | Content in dependent projects are included in the publish | Yes |
