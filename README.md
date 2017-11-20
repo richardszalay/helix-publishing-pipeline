@@ -17,8 +17,8 @@ There's nothing to configure. Adding the appropriate NuGet package automatically
 Essentially:
 
 1. The project in your solution that will publish the Web.config (if any) should use the WebRoot configuration
-2. Any modules (eg. Helix Project's) that you want to publish should use the Module configuration
-3. Any modules that don't need to be published (or the built in publishing is sufficient) can remain as-is.
+2. Any other projects that you want to enable the publishing behavior for (eg. Helix Projects) should use the Module configuration
+3. Any modules that don't need to be published (or for which the built in publishing is sufficient) can remain as-is.
 
 # Installation
 
