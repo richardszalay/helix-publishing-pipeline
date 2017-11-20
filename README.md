@@ -7,7 +7,7 @@ This project simplifies the publishing of Sitecore Helix solutions by integratin
 | Feature | Enabled by default |
 | ------ | ------ |
 | Content in dependent projects are included in the publish | Yes |
-| Parameters.xml files from dependent projects are included in the publish | Yes |
+| Web Deploy parameters (Parameters.xml) from dependent projects are included in the publish | Yes |
 | Web.Helix.config transforms are applied to project's Web.config | WebRoot package only |
 | Automatic exclusion of Web.config and Views/Web.config from publish | Module package only |
 | Publishing does not cause dependent projects to also independently publish  | Yes |
