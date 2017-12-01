@@ -15,6 +15,10 @@ properties {
   } else {
     $xunitPath = "$PSScriptRoot\..\src\tasks\packages\xunit.runner.console.2.3.0\tools\net452\xunit.console.exe"
     $buildTasksDeps = @("Restore")
+
+    if (-not $packageVersion) {
+      throw "packageVersion must be provided"
+    }
   }
 
   $nugetPath = "$toolsDir\nuget.exe"
