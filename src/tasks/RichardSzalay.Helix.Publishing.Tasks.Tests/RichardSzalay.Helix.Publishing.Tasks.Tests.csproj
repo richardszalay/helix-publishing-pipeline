@@ -60,7 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FakeBuildEngine.cs" />
+    <Compile Include="FakeTaskItem.cs" />
+    <Compile Include="FilterBinaryUnchangedFilesTests.cs" />
     <Compile Include="MergeXmlTransformsTests.cs" />
+    <Compile Include="FakeFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
