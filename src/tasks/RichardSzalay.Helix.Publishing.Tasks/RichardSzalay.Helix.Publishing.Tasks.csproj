@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilterBinaryUnchangedFiles.cs" />
+    <Compile Include="IFileSystem.cs" />
     <Compile Include="MergeXmlTransforms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlTransformMerger.cs" />

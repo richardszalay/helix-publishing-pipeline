@@ -1,0 +1,52 @@
+<Project>
+
+  <PropertyGroup>
+    <ExcludeUnchangedConfigFilesFromPublish Condition="'$(ExcludeUnchangedConfigFilesFromPublish)' == '' and '$(WebPublishMethod)' == 'FileSystem' and '$(PublishUrl)' != ''">true</ExcludeUnchangedConfigFilesFromPublish>
+  </PropertyGroup>
+
+  <UsingTask TaskName="RichardSzalay.Helix.Publishing.Tasks.FilterBinaryUnchangedFiles" 
+              AssemblyFile="$(MSBuildThisFileDirectory)..\RichardSzalay.Helix.Publishing.Tasks.dll"
+              Condition="'$(ExcludeUnchangedConfigFilesFromPublish)'=='true'"
+              />
+
+  <PropertyGroup>
+    <PipelineTransformPhaseDependsOn Condition="'$(ExcludeUnchangedConfigFilesFromPublish)'=='true'">
+      $(PipelineTransformPhaseDependsOn);
+      ExcludeUnchangedConfigFilesFromPublish
+    </PipelineTransformPhaseDependsOn>
+  </PropertyGroup>
+
+  <!-- Content item (ie csproj) implementation of CollectFilesFromHelixModules -->
+  <Target Name="ExcludeUnchangedConfigFilesFromPublish" DependsOnTargets="CollectHelixModules">
+    <ItemGroup>
+      <_ConfigFilesForPotentialExclusion 
+        Include="@(FilesForPackagingFromProject)" 
+        Condition="'%(Extension)' == '.config'" />
+    </ItemGroup>
+
+    <FilterBinaryUnchangedFiles
+      Files="@(_ConfigFilesForPotentialExclusion)"
+      RelativePathMetadata="DestinationRelativePath"
+      TargetDirectory="$(PublishUrl)"
+      Condition="'@(_ConfigFilesForPotentialExclusion)' != ''">
+
+      <Output TaskParameter="Output" ItemName="_UnchangedConfigFilesToExclude"/>
+    </FilterBinaryUnchangedFiles>
+
+    <ItemGroup>
+      <FilesForPackagingFromProject Remove="@(_UnchangedConfigFilesToExclude)" />
+    </ItemGroup>
+
+    <MakeDir Condition="$(EnablePackageProcessLoggingAndAssert) And !Exists($(PackageLogDir))"
+             Directories="$(PackageLogDir)" />
+
+    <WriteLinesToFile Condition="$(EnablePackageProcessLoggingAndAssert)"
+                      Encoding="utf-8"
+                      File="$(PackageLogDir)\UnchangedConfigFilesToExclude.txt"
+                      Lines="@(_UnchangedConfigFilesToExclude->'
+                      Files:%(Identity)
+                      FromTarget:%(FromTarget)
+                      DestinationRelativePath:%(DestinationRelativePath)')"
+                      Overwrite="True" />
+  </Target>
+</Project>

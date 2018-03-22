@@ -61,7 +61,7 @@ Describe "Module configuration" {
             $packageFiles -contains "Web.config" | Should Be $false
         }
 
-        # THe default pipeline excludes config transforms, even if they are marked as Content
+        # The default pipeline excludes config transforms, even if they are marked as Content
         It "should not prevent transforms from being excluded" {
             $packageFiles -contains "Web.Release.config" | Should Be $false
         }
