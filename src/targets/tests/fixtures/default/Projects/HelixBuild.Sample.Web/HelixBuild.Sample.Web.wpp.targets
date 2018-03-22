@@ -1,0 +1,5 @@
+<Project>
+    <ItemGroup Condition="'$(HelixTargetsConfiguration)'=='Module'">
+        <ExcludeFromPackageFiles Include="Web.config" />
+    </ItemGroup>
+</Project>

@@ -83,4 +83,88 @@ Describe "WebRoot configuration" {
             (Get-WebConfigAppSetting $webConfigXml "Foundation1.ConfigKey") | Should Be $null
         }
     }
+
+    Context "building package twice with unchanged Web.config" {
+        $projectPath = $fixtures.default.Project1
+        $projectDir = Split-Path $projectPath -Parent
+
+        $outDir = Join-Path $PSScriptRoot "out"
+
+        $webConfigInputFile = Join-Path $projectDir "Web.config"
+        $webConfigOutputFile = Join-Path $outDir "Web.config"
+        
+        Invoke-MSBuild -Project $projectPath -Properties @{
+            "HelixTargetsConfiguration" = "WebRoot"; # This is only supported by the test fixture
+            "Configuration" = "Debug";
+            "DeployOnBuild" = "true";
+            "DeployDefaultTarget" = "WebPublish";
+            "WebPublishMethod" = "FileSystem";
+            "PublishUrl" = $outDir;
+            "DeployAsIisApp" = "false";
+        }
+
+        $firstWrite = (Get-Item $webConfigOutputFile).LastWriteTime
+
+        (Get-ChildItem $webConfigInputFile).LastWriteTime = Get-Date
+
+        Invoke-MSBuild -Project $projectPath -Properties @{
+            "HelixTargetsConfiguration" = "WebRoot"; # This is only supported by the test fixture
+            "Configuration" = "Debug";
+            "DeployOnBuild" = "true";
+            "DeployDefaultTarget" = "WebPublish";
+            "WebPublishMethod" = "FileSystem";
+            "PublishUrl" = $outDir;
+            "DeployAsIisApp" = "false";
+            "EnablePackageProcessLoggingAndAssert" = "true";
+        }
+
+        It "should not deploy the config file twice" {
+            $result = (Get-Item $webConfigOutputFile).LastWriteTime
+
+            $result | Should Be $firstWrite
+        }
+
+    }
+
+    Context "building package twice with changed Web.config" {
+        $projectPath = $fixtures.default.Project1
+        $projectDir = Split-Path $projectPath -Parent
+
+        $outDir = Join-Path $PSScriptRoot "out"
+
+        $webConfigInputFile = Join-Path $projectDir "Web.config"
+        $webConfigOutputFile = Join-Path $outDir "Web.config"
+        
+        Invoke-MSBuild -Project $projectPath -Properties @{
+            "HelixTargetsConfiguration" = "WebRoot"; # This is only supported by the test fixture
+            "Configuration" = "Debug";
+            "DeployOnBuild" = "true";
+            "DeployDefaultTarget" = "WebPublish";
+            "WebPublishMethod" = "FileSystem";
+            "PublishUrl" = $outDir;
+            "DeployAsIisApp" = "false";
+        }
+
+        $firstWrite = (Get-Item $webConfigOutputFile).LastWriteTime
+
+        (Get-ChildItem $webConfigInputFile).LastWriteTime = Get-Date
+
+        Invoke-MSBuild -Project $projectPath -Properties @{
+            "HelixTargetsConfiguration" = "WebRoot"; # This is only supported by the test fixture
+            "Configuration" = "Release"; # Release has different transforms
+            "DeployOnBuild" = "true";
+            "DeployDefaultTarget" = "WebPublish";
+            "WebPublishMethod" = "FileSystem";
+            "PublishUrl" = $outDir;
+            "DeployAsIisApp" = "false";
+            "EnablePackageProcessLoggingAndAssert" = "true";
+        }
+
+        It "should deploy the config file twice" {
+            $result = (Get-Item $webConfigOutputFile).LastWriteTime
+
+            $result | Should Not Be $firstWrite
+        }
+
+    }
 }
