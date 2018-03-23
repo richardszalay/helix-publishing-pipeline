@@ -78,3 +78,9 @@ task Pack -depends GetNuget,BuildTasks,CreateArtifactDir {
     & $nugetPath pack $_.FullName -Version $packageVersion -OutputDirectory $artifactDir
   }
 }
+
+task Push -depends Pack {
+  Get-ChildItem "$PSScriptRoot\..\bin\*.$packageVersion.nupkg" | Foreach-Object {
+    & $nugetPath push $_.FullName -ApiKey $nugetApiKey
+  }
+}
