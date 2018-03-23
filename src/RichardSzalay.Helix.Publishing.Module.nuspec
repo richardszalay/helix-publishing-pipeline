@@ -5,6 +5,8 @@
         <version>0.1</version>
         <description>Includes dependent web projects in the ASP.NET Publishing Pipeline</description>
         <authors>Richard Szalay</authors>
+        <releaseNotes>0.8.0 - Skip publishing of transform config files that are unchanged in order to avoid an app pool recycle
+0.1.0 - Initial release</releaseNotes>
     </metadata>
     
     <files>
