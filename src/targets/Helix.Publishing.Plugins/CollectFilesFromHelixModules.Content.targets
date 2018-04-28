@@ -13,8 +13,8 @@
     </MSBuild>
 
     <ItemGroup>
-        <FilesForPackagingFromHelixModules Include="@(_FilesForPackagingFromHelixProjects)" 
-                                           Condition="'%(TargetPath)' != 'Web.config'">
+        <FilesForPackagingFromHelixModules Include="@(_FilesForPackagingFromHelixProjects)"
+                                           Condition="'%(TargetPath)' != '$(ProjectConfigFileName)' and '%(TargetPath)' != '$(ProjectConfigTransformFileName)'">
             <DestinationRelativePath>%(TargetPath)</DestinationRelativePath>
         </FilesForPackagingFromHelixModules>
     </ItemGroup>
