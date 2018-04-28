@@ -66,6 +66,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Helix.config" />
+    <!-- This is intentionally marked as "content" for a unit test -->
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -73,6 +74,7 @@
   <ItemGroup>
     <None Include="Parameters.xml" />
     <Content Include="Web.config" />
+    <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
