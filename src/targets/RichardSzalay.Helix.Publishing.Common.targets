@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CollectFilesFromHelixModules)' == 'true'">
-  <PipelineCollectFilesPhaseDependsOn>
+    <PipelineCollectFilesPhaseDependsOn>
       $(PipelineCollectFilesPhaseDependsOn);
       CollectFilesFromHelixModules;
     </PipelineCollectFilesPhaseDependsOn>
@@ -31,11 +31,24 @@
       CollectHelixModules;
       CollectFilesFromHelixModules$(CollectFilesFromHelixModulesMethod);
     </CollectFilesFromHelixModulesDependsOn>
+    <PreTransformWebConfigDependsOn>
+      $(PreTransformWebConfigDependsOn);
+      ExcludeHelixModuleWebConfigsFromTransform
+    </PreTransformWebConfigDependsOn>
   </PropertyGroup>
 
   <Target Name="CollectFilesFromHelixModules" DependsOnTargets="$(CollectFilesFromHelixModulesDependsOn)">
     <ItemGroup>
       <FilesForPackagingFromProject Include="@(FilesForPackagingFromHelixModules)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="ExcludeHelixModuleWebConfigsFromTransform">
+    <ItemGroup>
+      <_HelixModuleWebConfigFiles
+        Include="@(FilesForPackagingFromHelixModules)"
+        Condition="'%(Filename)%(Extension)' == '$(ProjectConfigFileName)'" />
+      <WebConfigsToTransform Remove="@(_HelixModuleWebConfigFiles)" />
     </ItemGroup>
   </Target>
 
