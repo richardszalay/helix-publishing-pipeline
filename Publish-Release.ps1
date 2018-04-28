@@ -5,4 +5,7 @@ param(
 
 Import-Module .\build\Psake\Psake.psd1
 
-Invoke-psake .\build\default.ps1 -parameters @{packageVersion=$PackageVersion}
+Invoke-psake .\build\default.ps1 -taskList Test,Push -parameters @{
+    packageVersion=$PackageVersion;
+    nugetApiKey=$NugetApiKey
+}
