@@ -65,5 +65,9 @@ Describe "Module configuration" {
         It "should not prevent transforms from being excluded" {
             $packageFiles -contains "Web.Release.config" | Should Be $false
         }
+
+        It "should prevent downstream publish profiles from being imported" {
+            # If the publish succeeds then this test passes, as Feature1 contains a malformed Package.pubxml
+        }
     }
 }
