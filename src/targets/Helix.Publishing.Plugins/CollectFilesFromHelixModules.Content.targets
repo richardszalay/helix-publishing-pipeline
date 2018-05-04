@@ -5,11 +5,10 @@
         Projects="@(HelixModulePaths)"
         Targets="ContentFilesProjectOutputGroup"
         BuildInParallel="$(BuildInParallel)"
-        Properties="%(_MSBuildProjectReferenceExistent.SetConfiguration); %(_MSBuildProjectReferenceExistent.SetPlatform)"
+        RemoveProperties="DeployOnBuild;PublishProfile"
         >
 
       <Output TaskParameter="TargetOutputs" ItemName="_FilesForPackagingFromHelixProjects" />
-
     </MSBuild>
 
     <ItemGroup>
