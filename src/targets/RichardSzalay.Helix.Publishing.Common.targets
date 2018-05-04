@@ -18,6 +18,7 @@
   <!-- Content -->
   <PropertyGroup>
    <CollectFilesFromHelixModules Condition="'$(CollectFilesFromHelixModules)' == ''">true</CollectFilesFromHelixModules>
+   <ExcludeHelixModuleConfigFiles Condition="'$(ExcludeHelixModuleConfigFiles)' == ''">true</ExcludeHelixModuleConfigFiles>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CollectFilesFromHelixModules)' == 'true'">
@@ -38,6 +39,13 @@
   </PropertyGroup>
 
   <Target Name="CollectFilesFromHelixModules" DependsOnTargets="$(CollectFilesFromHelixModulesDependsOn)">
+    <ItemGroup Condition="'$(ExcludeHelixModuleConfigFiles)' == 'true'">
+      <_HelixModuleWebConfigsToExclude Include="@(FilesForPackagingFromHelixModules)"
+                                       Condition="'%(Filename)%(Extension)' == '$(ProjectConfigFileName)'" />
+
+      <FilesForPackagingFromHelixModules Remove="@(_HelixModuleWebConfigsToExclude)" />
+    </ItemGroup>
+
     <ItemGroup>
       <FilesForPackagingFromProject Include="@(FilesForPackagingFromHelixModules)" />
     </ItemGroup>
