@@ -11,6 +11,7 @@ There's nothing to configure. Adding the appropriate NuGet package automatically
 | Content in dependent projects is included in the publish | Yes |
 | Web Deploy parameters (Parameters.xml) from dependent projects are included in the publish | Yes |
 | Web.config transforms (Web.Helix.config) from dependent projects are applied to project's Web.config | WebRoot package only |
+| Transformed config files are skipped if the contents are unchanged | Yes (FileSystem publish only) |
 | Web.config and Views/Web.config are excluded from publish | Module package only |
 | Publishing does not cause dependent projects to also independently publish  | Yes |
 
