@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <ExcludeUnchangedConfigFilesFromPublish Condition="'$(ExcludeUnchangedConfigFilesFromPublish)' == '' and '$(WebPublishMethod)' == 'FileSystem' and '$(PublishUrl)' != ''">true</ExcludeUnchangedConfigFilesFromPublish>
+    <ExcludeUnchangedConfigFilesFromPublish Condition="'$(ExcludeUnchangedConfigFilesFromPublish)' == '' and '$(WebPublishMethod)' == 'FileSystem' and '$(PublishUrl)' != '' and '$(DeleteExistingFiles)' != 'true'">true</ExcludeUnchangedConfigFilesFromPublish>
   </PropertyGroup>
 
   <UsingTask TaskName="RichardSzalay.Helix.Publishing.Tasks.FilterBinaryUnchangedFiles" 
