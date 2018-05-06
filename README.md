@@ -29,7 +29,7 @@ Since Helix solutions tend to expand to a large number of modules, it may be pre
 
 ### Publishing on build
 
-To trigger a build after each build, add the following to your web root csproj (anywhere before the `Web.Publishing.targets` import):
+To trigger a publish after each build, add the following to your web root csproj (anywhere before the `Web.Publishing.targets` import):
 
 ```xml
 <PropertyGroup>
