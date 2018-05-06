@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<parameters>
+  <parameter name="Feature1-Parameter1">
+    <parameterEntry 
+      kind="XmlFile"
+      scope="Web\.config$"
+      match="//setting[@name='WebService1EndPoint']/value/text()" />
+  </parameter>
+</parameters>
