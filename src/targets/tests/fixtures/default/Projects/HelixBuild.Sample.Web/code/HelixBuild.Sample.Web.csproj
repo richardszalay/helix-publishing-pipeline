@@ -80,7 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Features\HelixBuild.Feature1\HelixBuild.Feature1.csproj">
+    <ProjectReference Include="..\..\..\Features\HelixBuild.Feature1\code\HelixBuild.Feature1.csproj">
       <Project>{55ed6f62-650d-4c68-89d7-7ce71d76e2a7}</Project>
       <Name>HelixBuild.Feature1</Name>
     </ProjectReference>
@@ -95,7 +95,7 @@
   <PropertyGroup>
     <HelixTargetsConfiguration Condition="'$(HelixTargetsConfiguration)'==''">WebRoot</HelixTargetsConfiguration>
   </PropertyGroup>
-  <Import Project="..\..\..\..\..\RichardSzalay.Helix.Publishing.$(HelixTargetsConfiguration).targets" />
+  <Import Project="..\..\..\..\..\..\RichardSzalay.Helix.Publishing.$(HelixTargetsConfiguration).targets" />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

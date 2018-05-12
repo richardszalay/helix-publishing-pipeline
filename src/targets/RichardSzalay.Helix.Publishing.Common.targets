@@ -6,10 +6,9 @@
 
   <!-- CollectHelixModules -->
   <PropertyGroup>
-    <CollectHelixModulesMethod>ProjectDependencies</CollectHelixModulesMethod>
     <CollectHelixModulesDependsOn>
       $(CollectHelixModulesDependsOn);
-      CollectHelixModules$(CollectHelixModulesMethod);
+      CollectHelixModulesProjectDependencies;
     </CollectHelixModulesDependsOn>
   </PropertyGroup>
 
