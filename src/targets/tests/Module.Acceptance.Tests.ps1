@@ -70,7 +70,7 @@ Describe "Module configuration" {
         }
 
         It "should not include other Web.config from the packaged project" {
-            $publishedFiles -contains ".\Views\Web.config" | Should Be $false
+            $packageFiles -contains "Views\Web.config" | Should Be $false
         }
 
         # The default pipeline excludes config transforms, even if they are marked as Content
@@ -80,6 +80,7 @@ Describe "Module configuration" {
 
         It "should prevent downstream publish profiles from being imported" {
             # If the publish succeeds then this test passes, as Feature1 contains a malformed Package.pubxml
+            $true | Should Be $true
         }
     }
 }
