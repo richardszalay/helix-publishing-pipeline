@@ -1,9 +1,4 @@
 <Project>
-  <PropertyGroup>
-    <!-- TODO: Remove this -->
-    <SolutionDir Condition="'$(SolutionDir)'=='*Undefined*'">$(MSBuildProjectDirectory)\..\..\</SolutionDir>
-  </PropertyGroup>
-
   <!-- CollectHelixModules -->
   <PropertyGroup>
     <CollectHelixModulesDependsOn>
