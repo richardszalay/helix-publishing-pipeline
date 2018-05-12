@@ -2,4 +2,8 @@
     <ItemGroup Condition="'$(HelixTargetsConfiguration)'=='Module'">
         <ExcludeFromPackageFiles Include="Web.config" />
     </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFilesForPackagingFromHelixModules Include="$([MSBuild]::Escape('assets\**\*'))" />
+    </ItemGroup>
 </Project>

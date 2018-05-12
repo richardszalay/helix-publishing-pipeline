@@ -26,11 +26,11 @@
       $(PipelineCollectFilesPhaseDependsOn);
       CollectFilesFromHelixModules;
     </PipelineCollectFilesPhaseDependsOn>
-    <CollectFilesFromHelixModulesMethod Condition="'$(CollectFilesFromHelixModulesMethod)'==''">Content</CollectFilesFromHelixModulesMethod>
     <CollectFilesFromHelixModulesDependsOn>
       $(CollectFilesFromHelixModulesDependsOn);
       CollectHelixModules;
-      CollectFilesFromHelixModules$(CollectFilesFromHelixModulesMethod);
+      CollectFilesFromHelixModulesContent;
+      CollectFilesFromHelixModulesAdditional
     </CollectFilesFromHelixModulesDependsOn>
     <PreTransformWebConfigDependsOn>
       $(PreTransformWebConfigDependsOn);
