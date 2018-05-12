@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixBuild.Sample.Web", "Projects\HelixBuild.Sample.Web\HelixBuild.Sample.Web.csproj", "{F8E9537B-7F77-42F9-97B7-83DA59D102F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixBuild.Sample.Web", "Projects\HelixBuild.Sample.Web\code\HelixBuild.Sample.Web.csproj", "{F8E9537B-7F77-42F9-97B7-83DA59D102F4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{C6AFE021-EA20-477F-9509-01B6196B42DA}"
 EndProject
@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{94
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Foundation", "Foundation", "{506ADBBB-E8F5-46C2-93A5-54AD19D53CB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixBuild.Feature1", "Features\HelixBuild.Feature1\HelixBuild.Feature1.csproj", "{55ED6F62-650D-4C68-89D7-7CE71D76E2A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixBuild.Feature1", "Features\HelixBuild.Feature1\code\HelixBuild.Feature1.csproj", "{55ED6F62-650D-4C68-89D7-7CE71D76E2A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixBuild.Foundation1", "Foundation\HelixBuild.Foundation1\HelixBuild.Foundation1.csproj", "{74033504-283C-41F5-BC32-556D66820BA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixBuild.Foundation1", "Foundation\HelixBuild.Foundation1\code\HelixBuild.Foundation1.csproj", "{74033504-283C-41F5-BC32-556D66820BA9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{B16694E7-9887-4B25-8225-B96DD9AA67CA}"
 	ProjectSection(SolutionItems) = preProject
