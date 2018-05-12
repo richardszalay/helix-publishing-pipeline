@@ -5,7 +5,7 @@
 $fixtures = @{
     default = @{
         Solution = "$PSScriptRoot\fixtures/default/HelixBuild.Sample.Web.sln";
-        Project1 = "$PSScriptRoot\fixtures/default/Projects\HelixBuild.Sample.Web\HelixBuild.Sample.Web.csproj";
+        Project1 = "$PSScriptRoot\fixtures/default/Projects\HelixBuild.Sample.Web\code\HelixBuild.Sample.Web.csproj";
     }
     
 }
