@@ -53,6 +53,14 @@ Describe "Module configuration" {
             $packageFiles -contains "App_Config\Include\HelixBuild.Feature1.config" | Should Be $true  
         }
 
+        It "should include additional module content that have been specified by path" {
+            $packageFiles -contains "assets\feature1.js" | Should Be $true
+        }
+
+        It "should not include additional module content that have been specified by path from indirect module dependencies" {
+            $packageFiles -contains "assets\foundation.js" | Should Be $false
+        }
+
         It "should not include content from indirect module dependencies" {
             $packageFiles -contains "App_Config\Include\HelixBuild.Foundation1.config" | Should Be $false
         }
