@@ -1,0 +1,26 @@
+<Project>
+  <Target Name="CollectFilesFromHelixModulesAdditional" Outputs="%(AdditionalFilesForPackagingFromHelixModules.Identity)">
+
+    <PropertyGroup>
+        <_AdditionalFilesForPackagingFromHelixModulesIdentity>%(AdditionalFilesForPackagingFromHelixModules.Identity)</_AdditionalFilesForPackagingFromHelixModulesIdentity>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <_HelixModuleContentSpecs Include="@(HelixModulePaths -> '%(RootDir)%(Directory)\$(_AdditionalFilesForPackagingFromHelixModulesIdentity)')">
+            <HelixModulePath>%(RootDir)%(Directory)</HelixModulePath>
+        </_HelixModuleContentSpecs>
+    </ItemGroup>
+
+    <CreateItem Include="@(_HelixModuleContentSpecs)" PreserveExistingMetadata="true">
+        <Output TaskParameter="Include" ItemName="_HelixModuleContent"/>
+    </CreateItem>
+
+    <ItemGroup>
+        <FilesForPackagingFromHelixModules Include="@(_HelixModuleContent)">
+            <DestinationRelativePath>$([MSBuild]::MakeRelative('%(_HelixModuleContent.HelixModulePath)', '%(FullPath)'))</DestinationRelativePath>
+            <FromTarget>CollectFilesFromHelixModuleContent</FromTarget>
+        </FilesForPackagingFromHelixModules>
+    </ItemGroup>
+
+  </Target>
+</Project>
