@@ -13,7 +13,6 @@ $fixtures = @{
 $count = 1
 
 Describe "Module Web.config transforms" {
-<#
     Context "building package with default settings" {
         $projectPath = $fixtures.default.Project1
         $projectDir = Split-Path $projectPath -Parent
@@ -51,7 +50,7 @@ Describe "Module Web.config transforms" {
             $packageFiles -contains "Web.Helix.config" | Should Be $false
         }
     }
-#>
+
     Context "building package with IncludeHelixWebConfigTransformInPackage enabled" {
         $projectPath = $fixtures.default.Project1
         $projectDir = Split-Path $projectPath -Parent
