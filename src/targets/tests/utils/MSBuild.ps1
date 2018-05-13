@@ -69,6 +69,10 @@ function Invoke-MSBuildWithOutput
 
     Invoke-MSBuild $projectFile -TargetName "Test$TargetName" -Properties $Properties + @{"IsWrapperInstance"="true"} | Out-Null
 
+    if (-not (Test-Path $outputDataFile)) {
+        return @()
+    }
+
     return @(Get-Content $outputDataFile)
 }
 

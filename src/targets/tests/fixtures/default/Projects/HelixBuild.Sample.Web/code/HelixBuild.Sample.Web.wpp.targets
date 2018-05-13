@@ -3,7 +3,7 @@
         <ExcludeFromPackageFiles Include="Web.config" />
     </ItemGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="'$(IncludeAdditionalHelixModulesContent)' == 'true'">
         <AdditionalFilesForPackagingFromHelixModules Include="$([MSBuild]::Escape('assets\**\*'))" />
     </ItemGroup>
 

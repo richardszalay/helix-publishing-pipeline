@@ -24,6 +24,7 @@ Describe "Module configuration" {
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
             "DeployAsIisApp" = "false";
+            "IncludeAdditionalHelixModulesContent" = "true";
         }
 
         $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
