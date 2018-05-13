@@ -1,0 +1,24 @@
+<Project>
+  <PropertyGroup>
+    <CollectWebConfigsToTransformDependsOn>
+      $(CollectWebConfigsToTransformDependsOn);
+      ReplaceFilesForPackaging
+    </CollectWebConfigsToTransformDependsOn>
+  </PropertyGroup>
+
+  <Target Name="ReplaceFilesForPackaging" Outputs="%(ReplacementFilesForPackaging.DestinationRelativePath)">
+    <PropertyGroup>
+      <_ReplacementFileDestinationRelativePath>%(ReplacementFilesForPackaging.DestinationRelativePath)</_ReplacementFileDestinationRelativePath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_FilesForPackagingToReplace Include="@(FilesForPackagingFromProject)"
+                                   Condition="'%(DestinationRelativePath)' == '$(_ReplacementFileDestinationRelativePath)'" />
+      <FilesForPackagingFromProject Remove="@(_FilesForPackagingToReplace)" />
+
+      <FilesForPackagingFromProject Include="%(ReplacementFilesForPackaging.Identity)">
+        <DestinationRelativePath>%(ReplacementFilesForPackaging.DestinationRelativePath)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
+</Project>
