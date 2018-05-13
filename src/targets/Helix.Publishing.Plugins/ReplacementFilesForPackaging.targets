@@ -11,13 +11,13 @@
       <_ReplacementFileDestinationRelativePath>%(ReplacementFilesForPackaging.DestinationRelativePath)</_ReplacementFileDestinationRelativePath>
     </PropertyGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="'$(_ReplacementFileDestinationRelativePath)' != ''">
       <_FilesForPackagingToReplace Include="@(FilesForPackagingFromProject)"
                                    Condition="'%(DestinationRelativePath)' == '$(_ReplacementFileDestinationRelativePath)'" />
       <FilesForPackagingFromProject Remove="@(_FilesForPackagingToReplace)" />
 
       <FilesForPackagingFromProject Include="%(ReplacementFilesForPackaging.Identity)">
-        <DestinationRelativePath>%(ReplacementFilesForPackaging.DestinationRelativePath)</DestinationRelativePath>
+        <DestinationRelativePath>$(_ReplacementFileDestinationRelativePath)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
   </Target>
