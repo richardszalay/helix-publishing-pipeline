@@ -6,4 +6,10 @@
     <ItemGroup>
         <AdditionalFilesForPackagingFromHelixModules Include="$([MSBuild]::Escape('assets\**\*'))" />
     </ItemGroup>
+
+    <ItemGroup Condition="'$(ExternalWebConfigLocation)' != ''">
+        <ReplacementFilesForPackaging Include="$(ExternalWebConfigLocation)">
+            <DestinationRelativePath>Web.config</DestinationRelativePath>
+        </ReplacementFilesForPackaging>
+    </ItemGroup>
 </Project>
