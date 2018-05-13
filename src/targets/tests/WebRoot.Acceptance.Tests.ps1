@@ -79,6 +79,10 @@ Describe "WebRoot configuration" {
             (Get-WebConfigAppSetting $webConfigXml "Feature1.ConfigKey") | Should Be "Feature1.ConfigValue"
         }
 
+        It "should not include merged Web.Helix.config transform" {
+            $packageFiles -contains "Web.Helix.config" | Should Be $false
+        }
+
         It "should not include Web.Helix.config transforms from indirect module dependencies" {
             (Get-WebConfigAppSetting $webConfigXml "Foundation1.ConfigKey") | Should Be $null
         }
