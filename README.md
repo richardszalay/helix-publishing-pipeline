@@ -59,9 +59,40 @@ NOTE: When publishing to `FileSystem`, Helix Publishing Pipeline detects unchang
 
 ## Extensibility
 
+Unless otherwise specified, customisations should be either made to `ProjectName.wpp.targets` (to apply to all profiles) or `PublishProfileName.wpp.targets` (to apply to a single profile)
+
 ### Defining Web.config transforms
 
 Every module can define their own `Web.Helix.config` transform file to apply config transforms to the web root's Web.config file during publishing.
+
+#### Delayed transformation
+
+Some environments prefer to keep the official Web.config file with the target Sitecore installation.
+
+To support deploy-time transforms (ie. Slow Cheetah / VSTS / Octopus), the combined `Web.Helix.config` transform can be optionally included in the publish output:
+
+```xml
+<!-- In ProjectName.wpp.targets or PublishProfile.wpp.targets -->
+<PropertyGroup>
+  <IncludeHelixWebConfigTransformInPackage>true</IncludeHelixWebConfigTransformInPackage>
+</PropertyGroup>
+
+<!-- Optionally omit the project's Web.config from publishing -->
+<ItemGroup>
+  <ExcludeFromPackageFiles Include="Web.config" />
+</ItemGroup>
+```
+
+For local development scenarios, the transform can also be applied to an external Web.config. The transformed output will be published instead of the project's Web.config:
+
+```xml
+<!-- In ProjectName.wpp.targets or PublishProfile.wpp.targets -->
+<ItemGroup>
+  <ReplacementFilesForPackaging Include="c:\inetpub\wwwroot\Sitecore\Web.config">
+    <DestinationRelativePath>Web.config</DestinationRelativePath>
+  </ReplacementFilesForPackaging>
+</ItemGroup>
+```
 
 ### Defining Web Deploy parameters
 
@@ -73,7 +104,17 @@ Parameters defined in MSBuild using `MsDeployDeclareParameters` or `MSDeployPara
 
 The default behavior is to include all project items marked as `Content` (in their file properties). If your builds dynamically generate files, they can be included in the publish using standard WPP extensibility. 
 
-Support for including Helix module module files by convention/glob will be described at a future time.
+To include additional content by glob, define `AdditionalFilesForPackagingFromHelixModules`:
+
+```xml
+<!-- In ProjectName.wpp.targets or PublishProfile.wpp.targets -->
+<ItemGroup>
+  <!-- Escaping is required -->
+  <AdditionalFilesForPackagingFromHelixModules Include="$([MSBuild]::Escape('assets\**\*'))" />
+</ItemGroup>
+```
+
+Remapping the content to different output paths is currently not supported.
 
 NOTE: Web.config files contained in modules are intentionally skipped to avoid issues with long paths as described by [#9](https://github.com/richardszalay/helix-publishing-pipeline/issues/9). This restriction only affects Web.config files, not Sitecore config files, and will be removed once a suitable workaround is place.
 
