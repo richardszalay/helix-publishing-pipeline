@@ -1,0 +1,7 @@
+1.2.0 - Support for excluding Sitecore assemblies from publish (individually or from lists)
+
+1.1.0 - Support for per-Module additional content patterns (assets/**/*)
+      - Support for packaging the merged Web.Helix.config transform
+      - Support for transforming an external Web.config during publish (FileSystem publish only)
+
+1.0.0 - Initial relase
