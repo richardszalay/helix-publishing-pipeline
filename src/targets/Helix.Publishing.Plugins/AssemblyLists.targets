@@ -1,0 +1,44 @@
+<Project>
+  <PropertyGroup>
+    <ExcludeSitecoreAssemblyLists Condition="'$(ExcludeSitecoreAssemblyLists)'==''">true</ExcludeSitecoreAssemblyLists>
+  </PropertyGroup>
+
+  <UsingTask TaskName="RichardSzalay.Helix.Publishing.Tasks.ParseAssemblyLists" 
+              AssemblyFile="$(MSBuildThisFileDirectory)..\RichardSzalay.Helix.Publishing.Tasks.dll"
+              Condition="'$(ExcludeSitecoreAssemblyLists)'=='true'"
+              />
+
+  <PropertyGroup Condition="'$(ExcludeSitecoreAssemblyLists)' == 'true'">
+    <ExcludeFilesFromPackageDependsOn>
+      $(ExcludeFilesFromPackageDependsOn);
+      ExcludeSitecoreAssembliesFromPublish
+    </ExcludeFilesFromPackageDependsOn>
+  </PropertyGroup>
+    
+  <Target Name="ExcludeSitecoreAssembliesFromPublish" DependsOnTargets="ParseSitecoreAssemblyLists">
+
+    <ItemGroup>
+      <_SitecoreAssembliesToExclude Remove="@(_SitecoreAssembliesToExclude)" />
+      <_SitecoreAssembliesToExclude Include="@(SitecoreAssembliesToExclude)" />
+      <_SitecoreAssembliesToExclude Remove="@(SitecoreAssembliesToInclude)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ExcludeFromPackageFiles Include="@(_SitecoreAssembliesToExclude -> 'bin\%(Filename)%(Extension)')" />
+      <ExcludeFromPackageFiles Include="@(_SitecoreAssembliesToExclude -> 'bin\%(Filename).pdb')" />
+      <ExcludeFromPackageFiles Include="@(_SitecoreAssembliesToExclude -> 'bin\%(Filename).xml')" />
+    </ItemGroup>
+  </Target>
+  
+  <!-- This is a pretty naive implementation but it's fine for the lists we have -->
+  <Target Name="ParseSitecoreAssemblyLists">
+
+    <ParseAssemblyLists Files="@(SitecoreAssemblyListsToExclude)"
+                        Condition="'@(SitecoreAssemblyListsToExclude)'!=''">
+      <Output TaskParameter="Output" ItemName="SitecoreAssembliesToExclude"/>
+    </ParseAssemblyLists>
+    
+  </Target>
+
+
+</Project>
