@@ -57,7 +57,7 @@ This behavior is currently described via opt-in guidance, but may be configured 
 
 NOTE: When publishing to `FileSystem`, Helix Publishing Pipeline detects unchanged Web.config transformation outputs and skips them to prevent an unnecessarily app pool recycle.
 
-## Excluding Sitecore assemblies
+### Excluding Sitecore assemblies
 
 In many cases it may be desirable to exclude from publish the assemblies that ship with Sitecore, either to reduce the size of the deployment artifact or to reduce the chance of overriding assemblies with incorrect versions. 
 
