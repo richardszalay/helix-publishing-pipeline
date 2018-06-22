@@ -59,8 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyListEntryComparer.cs" />
     <Compile Include="FakeBuildEngine.cs" />
+    <Compile Include="FakeAssemblyParser.cs" />
     <Compile Include="FakeTaskItem.cs" />
+    <Compile Include="AssemblyListParserTests.cs" />
+    <Compile Include="ParseAssemblyListsTests.cs" />
+    <Compile Include="ParseAssemblyListTests.cs" />
     <Compile Include="FilterBinaryUnchangedFilesTests.cs" />
     <Compile Include="MergeXmlTransformsTests.cs" />
     <Compile Include="FakeFileSystem.cs" />

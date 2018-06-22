@@ -1,0 +1,2 @@
+Filename,FileVersion,Version
+HelixBuild.Feature1.dll,1.0,2.0

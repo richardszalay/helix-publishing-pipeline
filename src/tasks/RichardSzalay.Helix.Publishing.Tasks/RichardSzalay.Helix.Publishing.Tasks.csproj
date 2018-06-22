@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyListEntry.cs" />
+    <Compile Include="AssemblyListParser.cs" />
+    <Compile Include="IAssemblyListParser.cs" />
+    <Compile Include="ParseAssemblyLists.cs" />
     <Compile Include="FilterBinaryUnchangedFiles.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="MergeXmlTransforms.cs" />
