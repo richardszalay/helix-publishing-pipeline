@@ -5,7 +5,11 @@
         <version>0.1</version>
         <description>Includes dependent web projects in the ASP.NET Publishing Pipeline</description>
         <authors>Richard Szalay</authors>
-        <releaseNotes>1.0.0 - Module web.config files are no longer published #9
+        <releaseNotes>1.2.0 - Support for excluding Sitecore assemblies from publish (individually or from lists)
+1.1.0 - Support for per-Module additional content patterns (assets/**/*)
+      - Support for packaging the merged Web.Helix.config transform
+      - Support for transforming an external Web.config during publish (FileSystem publish only)
+1.0.0 - Module web.config files are no longer published #9
       - Fix module config files being alternatively removed when deploying to FileSystem #10
       - Module pubxml files are no longer imported #8
 0.8.1 - Exclude module Web.config files from the transform process
