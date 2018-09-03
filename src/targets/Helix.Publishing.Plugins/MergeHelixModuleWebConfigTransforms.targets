@@ -24,8 +24,11 @@
   <PropertyGroup>
     <HelixModuleWebConfigTransformFileNamePrefix>Web.Helix</HelixModuleWebConfigTransformFileNamePrefix>
 
+    <_HelixDefaultIntermediateOutputPath>$(IntermediateOutputPath)</_HelixDefaultIntermediateOutputPath>
+    <_HelixDefaultIntermediateOutputPath Condition="'$([System.IO.Path]::IsPathRooted($(IntermediateOutputPath)))' == 'False'">$(MSBuildProjectDirectory)\$(IntermediateOutputPath)</_HelixDefaultIntermediateOutputPath>
+
     <HelixTransformWebConfigIntermediateOutput Condition="'$(HelixTransformWebConfigIntermediateOutput)' == ''">HelixTransformWebConfig</HelixTransformWebConfigIntermediateOutput>
-    <HelixTransformWebConfigIntermediateLocation Condition="'$(HelixTransformWebConfigIntermediateLocation)' == ''">$(_WPPDefaultIntermediateOutputPath)$(HelixTransformWebConfigIntermediateOutput)</HelixTransformWebConfigIntermediateLocation>
+    <HelixTransformWebConfigIntermediateLocation Condition="'$(HelixTransformWebConfigIntermediateLocation)' == ''">$(_HelixDefaultIntermediateOutputPath)$(HelixTransformWebConfigIntermediateOutput)</HelixTransformWebConfigIntermediateLocation>
   </PropertyGroup>
 
   <Target Name="CollectHelixModuleWebConfigTransforms">
