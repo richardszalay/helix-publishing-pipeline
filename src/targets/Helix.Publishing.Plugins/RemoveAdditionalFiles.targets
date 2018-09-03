@@ -1,0 +1,48 @@
+<Project>
+
+  <PropertyGroup>
+    <RemoveAdditionalFilesFromTarget Condition="'$(RemoveAdditionalFilesFromTarget)' == '' and '$(WebPublishMethod)' == 'FileSystem' and '$(PublishUrl)' != '' and '$(DeleteExistingFiles)' != 'true'">true</RemoveAdditionalFilesFromTarget>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <WebFileSystemPublishDependsOn Condition="'$(RemoveAdditionalFilesFromTarget)'=='true'">
+      $(WebFileSystemPublishDependsOn);
+      CollectAdditionalFilesToRemoveFromTarget
+    </WebFileSystemPublishDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CollectAdditionalFilesToRemoveFromTarget" DependsOnTargets="CollectHelixModules">
+
+    <ItemGroup>
+      <_MatchingAdditionalFilesAtTargetBeforePublishSpecs Include="@(AdditionalFilesToRemoveFromTarget -> '$(PublishUrl)\%(TargetPath)')" />
+    </ItemGroup>
+
+    <CreateItem Include="@(_MatchingAdditionalFilesAtTargetBeforePublishSpecs)" PreserveExistingMetadata="true">
+        <Output TaskParameter="Include" ItemName="_MatchingAdditionalFilesAtTargetBeforePublish"/>
+    </CreateItem>
+
+    <CollectFilesinFolder RootPath="$(WPPAllFilesInSingleFolder)">
+      <Output TaskParameter="Result" ItemName="_MatchingAdditionalFilesAtSource" />
+    </CollectFilesinFolder>
+
+    <ItemGroup>
+      <MatchingFilesBeingUpdated Include="@(_MatchingAdditionalFilesAtSource -> '$(PublishUrl)\%(Identity)')" Condition="Exists('$(PublishUrl)\%(Identity)')" />
+
+      <_MatchingAdditionalFilesAtTargetBeforePublish Remove="@(MatchingFilesBeingUpdated)" />
+    </ItemGroup>
+
+    <Delete Files="@(_MatchingAdditionalFilesAtTargetBeforePublish)" />
+
+    <MakeDir Condition="$(EnablePackageProcessLoggingAndAssert) And !Exists($(PackageLogDir))"
+             Directories="$(PackageLogDir)" />
+
+    <WriteLinesToFile Condition="$(EnablePackageProcessLoggingAndAssert)"
+                      Encoding="utf-8"
+                      File="$(PackageLogDir)\AdditionalFilesToRemoveFromTarget.txt"
+                      Lines="@(_MatchingAdditionalFilesAtTargetBeforePublish->'
+                      Files:%(Identity)')"
+                      Overwrite="True" />
+
+  </Target>
+
+</Project>

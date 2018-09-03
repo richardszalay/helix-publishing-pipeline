@@ -25,4 +25,10 @@
     <ItemGroup Condition="'$(IncludeFoundationAssemblyList)' == 'true'">
         <SitecoreAssemblyListsToExclude Include="AssemblyLists\FeatureList.txt" />
     </ItemGroup>
+
+    <ItemGroup Condition="'$(IncludeAdditionalFilesToRemoveFromTarget)' == 'true'">
+        <AdditionalFilesToRemoveFromTarget Include="Test">
+            <TargetPath>bin\HelixBuild.Feature*.dll</TargetPath>
+        </AdditionalFilesToRemoveFromTarget>
+    </ItemGroup>
 </Project>
