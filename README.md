@@ -148,6 +148,28 @@ Remapping the content to different output paths is currently not supported.
 
 NOTE: Web.config files contained in modules are intentionally skipped to avoid issues with long paths as described by [#9](https://github.com/richardszalay/helix-publishing-pipeline/issues/9). This restriction only affects Web.config files, not Sitecore config files, and will be removed once a suitable workaround is place.
 
+### Removing additional files
+
+It's quite common, particularly in development, to rename projects and config files. Unfortunately these typically remain in the deployment folder unless manually removed and can cause problems. Since the only built in option (DeleteExistingFiles) deletes _all_ target files, including `/sitecore` and always triggering an AppPool recycle, Helix Publishing Pipeline provides support for deleting target files specified by a pattern.
+
+The implementation only deletes additional files when they exist, skipping unnecessary AppPool recycles when no assemblies have changed.
+
+To use it, define `AdditionalFilesToRemoveFromTarget` with a file pattern in the `TargetPath` metadata:
+
+```xml
+<!-- In ProjectName.wpp.targets or PublishProfile.wpp.targets -->
+<ItemGroup>
+  <AdditionalFilesToRemoveFromTarget Include="ContosoAssemblies">
+    <TargetPath>bin\Contoso.*.dll</TargetPath>
+  </AdditionalFilesToRemoveFromTarget>
+  <AdditionalFilesToRemoveFromTarget Include="ContosoConfig">
+    <TargetPath>App_Config\**\Contoso.*.config</TargetPath>
+  </AdditionalFilesToRemoveFromTarget>
+</ItemGroup>
+```
+
+This feature is only currently supported when publishing to a FileSystem target, though a future release may support generating MSDeploy skip rules.
+
 ### Advanced scenarios
 
 Helix Publishing Pipeline has been developed using standard MSBuild conventions. As such, all functionality can be customised or disabled entirely. Review the [target files](https://github.com/richardszalay/helix-publishing-pipeline/tree/master/src/targets) for specifics.
