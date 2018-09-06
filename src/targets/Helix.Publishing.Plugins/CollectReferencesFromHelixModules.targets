@@ -1,0 +1,30 @@
+<Project>
+  <PropertyGroup>
+
+    <ResolveAssemblyReferencesDependsOn>
+      $(ResolveAssemblyReferencesDependsOn);
+      CollectReferencesFromHelixModules;
+    </ResolveAssemblyReferencesDependsOn>
+
+  </PropertyGroup>
+
+  <Target Name="CollectReferencesFromHelixModules" DependsOnTargets="CollectHelixModules">
+
+    <MSBuild BuildInParallel="$(BuildInParallel)" Projects="@(HelixModulePaths)" RemoveProperties="DeployOnBuild;PublishProfile" Targets="ResolveAssemblyReferences">
+      <Output ItemName="_ReferencesForPackagingFromHelixProjects" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+
+    <ItemGroup>
+      <ReferencesForPackaginFromHelixProjects Include="@(_ReferencesForPackagingFromHelixProjects)" Condition="'%(_ReferencesForPackagingFromHelixProjects.CopyLocal)'=='true'"/>
+
+      <Reference Include="%(ReferencesForPackaginFromHelixProjects.FusionName)">
+        <ResolvedFrom>%(ReferencesForPackaginFromHelixProjects.ResolvedFrom)</ResolvedFrom>
+        <HintPath>%(ReferencesForPackaginFromHelixProjects.FullPath)</HintPath>
+        <Redist>%(ReferencesForPackaginFromHelixProjects.Redist)</Redist>
+        <CopyLocal>true</CopyLocal>
+      </Reference>
+    </ItemGroup>
+    
+  </Target>
+
+</Project>
