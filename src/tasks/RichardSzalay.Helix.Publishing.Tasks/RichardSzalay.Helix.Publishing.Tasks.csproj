@@ -50,6 +50,7 @@
     <Compile Include="IFileSystem.cs" />
     <Compile Include="MergeXmlTransforms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResolveModuleContentTargetPath.cs" />
     <Compile Include="XmlTransformMerger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

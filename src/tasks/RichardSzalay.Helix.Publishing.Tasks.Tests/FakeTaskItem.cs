@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Build.Framework;
 
 namespace RichardSzalay.Helix.Publishing.Tasks.Tests
@@ -32,7 +33,10 @@ namespace RichardSzalay.Helix.Publishing.Tasks.Tests
 
         public void CopyMetadataTo(ITaskItem destinationItem)
         {
-            throw new System.NotImplementedException();
+            foreach (var kvp in this.metadata)
+            {
+                destinationItem.SetMetadata(kvp.Key, kvp.Value);
+            }
         }
 
         public string GetMetadata(string metadataName)
@@ -63,6 +67,18 @@ namespace RichardSzalay.Helix.Publishing.Tasks.Tests
         IEnumerator IEnumerable.GetEnumerator()
         {
             return metadata.GetEnumerator();
+        }
+
+        public static ITaskItem FromFilePath(string path)
+        {
+            var item = new FakeTaskItem(path);
+
+            item.SetMetadata("FullPath", path);
+            item.SetMetadata("Directory", Path.GetExtension(path));
+            item.SetMetadata("Filename", Path.GetFileNameWithoutExtension(path));
+            item.SetMetadata("Extension", Path.GetExtension(path));
+
+            return item;
         }
     }
 

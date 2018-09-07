@@ -21,8 +21,12 @@ Describe "CollectFilesFromHelixModules.Additional" {
             "IncludeAdditionalHelixModulesContent" = "true";
         } -TargetName "CollectFilesFromHelixModulesAdditional" -OutputItem "FilesForPackagingFromHelixModules -> '%(DestinationRelativePath)'"
 
-        It "should include matching files" {
+        It "should include matching files added without TargetPath" {
             $result -contains "assets\feature1.js" | Should Be $true
+        }
+
+        It "should include matching files added with TargetPath" {
+            $result -contains "App_Config\Include\HelixBuild.Foundation1.config" | Should Be $true
         }
     }
 
