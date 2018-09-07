@@ -70,6 +70,7 @@
     <Compile Include="MergeXmlTransformsTests.cs" />
     <Compile Include="FakeFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResolveModuleContentTargetPathTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RichardSzalay.Helix.Publishing.Tasks\RichardSzalay.Helix.Publishing.Tasks.csproj">
