@@ -5,6 +5,11 @@
 
     <ItemGroup Condition="'$(IncludeAdditionalHelixModulesContent)' == 'true'">
         <AdditionalFilesForPackagingFromHelixModules Include="$([MSBuild]::Escape('assets\**\*'))" />
+
+        <AdditionalFilesForPackagingFromHelixModules Include="Serialization">
+            <SourcePath>..\serialization\**\*.yml</SourcePath>
+            <TargetPath>App_Data\unicorn\^(HelixModule.Filename)\^(RecursiveDir)^(Filename)^(Extension)</TargetPath>
+        </AdditionalFilesForPackagingFromHelixModules>
     </ItemGroup>
 
     <ItemGroup Condition="'$(ExternalWebConfigLocation)' != ''">

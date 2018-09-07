@@ -1,13 +1,30 @@
 <Project>
-  <Target Name="CollectFilesFromHelixModulesAdditional" Outputs="%(AdditionalFilesForPackagingFromHelixModules.Identity)" DependsOnTargets="CollectHelixModules">
+  <UsingTask TaskName="RichardSzalay.Helix.Publishing.Tasks.ResolveModuleContentTargetPath" 
+    AssemblyFile="$(MSBuildThisFileDirectory)..\RichardSzalay.Helix.Publishing.Tasks.dll"
+    />
+
+  <Target Name="CollectFilesFromHelixModulesAdditional" Outputs="%(HelixModulePaths.Identity)" DependsOnTargets="CollectHelixModules">
 
     <PropertyGroup>
-        <_AdditionalFilesForPackagingFromHelixModulesIdentity>%(AdditionalFilesForPackagingFromHelixModules.Identity)</_AdditionalFilesForPackagingFromHelixModulesIdentity>
+        <_HelixModulePath>%(HelixModulePaths.RootDir)%(HelixModulePaths.Directory)</_HelixModulePath>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(_AdditionalFilesForPackagingFromHelixModulesIdentity)' != ''">
-        <_HelixModuleContentSpecs Include="@(HelixModulePaths -> '%(RootDir)%(Directory)\$(_AdditionalFilesForPackagingFromHelixModulesIdentity)')">
-            <HelixModulePath>%(RootDir)%(Directory)</HelixModulePath>
+    <ItemGroup>
+        <_AdditionalRelativeFilesForPackagingFromHelixModules 
+            Include="@(AdditionalFilesForPackagingFromHelixModules)"
+            Condition="'%(AdditionalFilesForPackagingFromHelixModules.TargetPath)' == ''"
+            />
+
+        <_AdditionalTemplatedFilesForPackagingFromHelixModules 
+            Include="@(AdditionalFilesForPackagingFromHelixModules)"
+            Condition="'%(AdditionalFilesForPackagingFromHelixModules.TargetPath)' != '' and '%(AdditionalFilesForPackagingFromHelixModules.SourcePath)' != ''"
+            />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_HelixModuleContentSpecs Include="@(_AdditionalRelativeFilesForPackagingFromHelixModules -> '$(_HelixModulePath)%(Identity)')" />
+        <_HelixModuleContentSpecs Include="@(_AdditionalTemplatedFilesForPackagingFromHelixModules -> '$(_HelixModulePath)%(SourcePath)')">
+            <TargetPath>%(_AdditionalTemplatedFilesForPackagingFromHelixModules.TargetPath)</TargetPath>
         </_HelixModuleContentSpecs>
     </ItemGroup>
 
@@ -15,9 +32,18 @@
         <Output TaskParameter="Include" ItemName="_HelixModuleContent"/>
     </CreateItem>
 
-    <ItemGroup Condition="'@(_HelixModuleContent)' != ''">
-        <FilesForPackagingFromHelixModules Include="@(_HelixModuleContent)">
-            <DestinationRelativePath>$([MSBuild]::MakeRelative('%(_HelixModuleContent.HelixModulePath)', '%(FullPath)'))</DestinationRelativePath>
+    <ResolveModuleContentTargetPath
+        Module="@(HelixModulePaths)"
+        Content="@(_HelixModuleContent)"
+        TargetPathMetadataName="TargetPath"
+        ModuleMetadataPrefix="HelixModule"
+    >
+        <Output TaskParameter="Output" ItemName="_ResolvedHelixModuleContent"/>
+    </ResolveModuleContentTargetPath>
+
+    <ItemGroup Condition="'@(_ResolvedHelixModuleContent)' != ''">
+        <FilesForPackagingFromHelixModules Include="@(_ResolvedHelixModuleContent)">
+            <DestinationRelativePath>%(TargetPath)</DestinationRelativePath>
             <FromTarget>CollectFilesFromHelixModuleContent</FromTarget>
         </FilesForPackagingFromHelixModules>
     </ItemGroup>

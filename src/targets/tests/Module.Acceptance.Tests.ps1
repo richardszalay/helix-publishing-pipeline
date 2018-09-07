@@ -58,6 +58,10 @@ Describe "Module configuration" {
             $packageFiles -contains "assets\feature1.js" | Should Be $true
         }
 
+        It "should include additional module content that have been specified by templated TargetDir" {
+            $packageFiles -contains "App_Data\unicorn\HelixBuild.Feature1\sub\Content1.yml" | Should Be $true
+        }
+
         It "should not include additional module content that have been specified by path from indirect module dependencies" {
             $packageFiles -contains "assets\foundation.js" | Should Be $false
         }
