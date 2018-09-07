@@ -136,7 +136,7 @@ Parameters defined in MSBuild using `MsDeployDeclareParameters` or `MSDeployPara
 
 The default behavior is to include all project items marked as `Content` (in their file properties). If your builds dynamically generate files, they can be included in the publish using standard WPP extensibility.
 
-To include additional content by glob, define `AdditionalFilesForPackagingFromHelixModules`:
+To include additional content under the project directory by glob, define `AdditionalFilesForPackagingFromHelixModules`:
 
 ```xml
 <!-- In ProjectName.wpp.targets or PublishProfile.wpp.targets -->
@@ -146,7 +146,29 @@ To include additional content by glob, define `AdditionalFilesForPackagingFromHe
 </ItemGroup>
 ```
 
-Remapping the content to different output paths is currently not supported.
+For advanced scenarios, such as when the source and target directories don't match exactly, specify both a `SourcePath` and `TargetPath`. `TargetPath` can refer to content metadata using the `^(Metadata)` syntax and can also refer to any metadata from the relative module using `^(HelixModule.Metadata)`:
+
+```xml
+<!-- In ProjectName.wpp.targets or PublishProfile.wpp.targets -->
+<ItemGroup>
+  <AdditionalFilesForPackagingFromHelixModules Include="Serialization">
+    <SourcePath>..\serialization\**\*.yml</SourcePath>
+    <TargetPath>App_Data\unicorn\^(HelixModule.Filename)\^(RecursiveDir)^(Filename)^(Extension)</TargetPath>
+  </AdditionalFilesForPackagingFromHelixModules>
+</ItemGroup>
+```
+
+A list of standard file metadata names can be found at [MSBuild well-known item metadata](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-well-known-item-metadata), and additional module metadata can be specified with the `ProjectReference`:
+
+
+```xml
+<ItemGroup>
+  <ProjectReference Include="..\Foundation\*\code\*.csproj">
+    <!-- Can be used in a TargetPath using ^(HelixModule.Layer) -->
+    <Layer>Foundation</Layer>
+  </ProjectReference>
+</ItemGroup>
+```
 
 NOTE: `Web.config` files contained in modules are intentionally skipped to avoid issues with long paths as described by [#9](https://github.com/richardszalay/helix-publishing-pipeline/issues/9). This restriction only affects `Web.config` files, not Sitecore config files, and will be removed once a suitable workaround is place.
 
