@@ -1,3 +1,5 @@
+1.4.0 - 1.4.0 - Module assembly references are now always included #31
+
 1.3.0 - Advanced per-module content scenarios, specifically around mapped target paths #18
       - Remove additional files by pattern #25
 
