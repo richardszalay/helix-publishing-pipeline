@@ -1,0 +1,34 @@
+<Project>
+  <!-- Collect Xml Transform Files From Helix Modules -->
+  <PropertyGroup>
+      <CollectWebConfigsToTransformDependsOn>
+          $(CollectWebConfigsToTransformDependsOn);
+          CollectXmlTransformFilesFromHelixModules;
+      </CollectWebConfigsToTransformDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CollectXmlTransformFilesFromHelixModules" BeforeTargets="CollectWebConfigsToTransform">
+
+      <ItemGroup>
+          <_TransformFilesFromHelixModules Include="@(FilesForPackagingFromProject)" Condition="'%(FilesForPackagingFromProject.XmlTransform)' == 'True'"/>
+          <FilesForPackagingFromProject Remove="@(_TransformFilesFromHelixModules)" />
+      </ItemGroup>
+
+      <ItemGroup>
+          <__TransformFilesFromHelixModules Include="@(_TransformFilesFromHelixModules)">
+              <DestinationTargetPath>$([System.String]::new($(PublishUrl)\%(TargetPath)).Substring(0, $([System.String]::new($(PublishUrl)\%(TargetPath)).IndexOf('.xdt')) ))</DestinationTargetPath>
+              <DestinationRelativePath>$([System.String]::new(%(TargetPath)).Substring(0, $([System.String]::new(%(TargetPath)).IndexOf('.xdt')) ))</DestinationRelativePath>
+          </__TransformFilesFromHelixModules>
+
+          <WebConfigsToTransform Include="%(__TransformFilesFromHelixModules.DestinationTargetPath)">
+              <TransformFile>%(__TransformFilesFromHelixModules.Identity)</TransformFile>
+              <TransformOriginalFolder>$(TransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
+              <TransformFileFolder>$(TransformWebConfigIntermediateLocation)\assist</TransformFileFolder>
+              <TransformOutputFile>$(TransformWebConfigIntermediateLocation)\transformed\$([System.IO.Path]::GetDirectoryName($([System.String]::new(%(__TransformFilesFromHelixModules.DestinationRelativePath)).TrimEnd('\'))))\%(__TransformFilesFromHelixModules.FileName)</TransformOutputFile>
+              <TransformScope>$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\$([System.IO.Path]::GetDirectoryName($([System.String]::new(%(__TransformFilesFromHelixModules.DestinationRelativePath)).TrimEnd('\'))))\%(__TransformFilesFromHelixModules.FileName)))</TransformScope>
+              <Exclude>False</Exclude>
+              <DestinationRelativePath>%(__TransformFilesFromHelixModules.DestinationRelativePath)</DestinationRelativePath>
+          </WebConfigsToTransform>
+      </ItemGroup>
+    </Target>
+</Project>
