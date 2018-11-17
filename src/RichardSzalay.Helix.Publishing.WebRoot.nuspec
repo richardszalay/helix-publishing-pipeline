@@ -5,7 +5,8 @@
         <version>0.1</version>
         <description>Includes dependent web projects in the ASP.NET Publishing Pipeline</description>
         <authors>Richard Szalay</authors>
-        <releaseNotes>1.4.0 - Module assembly references are now always included #31
+        <releaseNotes>1.4.1 - Fix Web.Helix.config transforms being applied to Views/Web.config #34
+1.4.0 - Module assembly references are now always included #31
 1.3.0 - Advanced per-module content scenarios, specifically around mapped target paths #18
       - Remove additional files by pattern #25
 1.2.0 - Support for excluding Sitecore assemblies from publish (individually or from lists)
