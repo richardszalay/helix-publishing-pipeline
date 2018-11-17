@@ -38,6 +38,11 @@ Describe "Module Web.config transforms" {
             (Get-WebConfigAppSetting $webConfigXml "Project.ConfigKey") | Should Be "Project.ConfigValue"
         }
 
+        It "should not apply Web.config to different paths" {
+            $viewsVebConfigXml = [xml](Get-MSDeployPackageFileContent -PackagePath $packageFilename -FilePath "Views/Web.config")
+            (Get-WebConfigAppSetting $viewsVebConfigXml "Feature1.ConfigKey") | Should Be $null
+        }
+
         It "should include Web.Helix.config transforms from feature modules" {
             (Get-WebConfigAppSetting $webConfigXml "Feature1.ConfigKey") | Should Be "Feature1.ConfigValue"
         }

@@ -40,9 +40,8 @@
 
   <Target Name="MergeHelixModuleWebConfigTransforms" DependsOnTargets="$(MergeHelixModuleWebConfigTransformsDependsOn)">
 
-
     <ItemGroup>
-      <_ProjectWebConfigTransform Include="@(WebConfigsToTransform)" Condtion="'%(WebConfigsToTransform.Filename)%(WebConfigsToTransform.Extension)'=='$(ProjectConfigFileName)'" />
+      <_ProjectWebConfigTransform Include="@(WebConfigsToTransform)" Condition="'%(TransformScope)'==$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\$(ProjectConfigFileName)))" />
       <_WebConfigTransformsToMerge Include="@(HelixModuleWebConfigTransforms)" Condition="Exists(%(FullPath))" />
       <_WebConfigTransformsToMerge Include="@(_ProjectWebConfigTransform->'%(TransformFile)')" Condition="Exists(%(_ProjectWebConfigTransform.TransformFile))" />
 
