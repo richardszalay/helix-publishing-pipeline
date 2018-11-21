@@ -48,7 +48,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-      <_MergeHelixWebConfigTransforms Condition="'@(HelixModuleWebConfigTransforms)' != '' or '$(IncludeHelixWebConfigTransformInPackage)' == 'true'">true</_MergeHelixWebConfigTransforms>
+      <_MergeHelixWebConfigTransforms Condition="'@(HelixModuleWebConfigTransforms)' != '' and '$(IncludeHelixWebConfigTransformInPackage)' == 'true'">true</_MergeHelixWebConfigTransforms>
       <_MergedHelixWebConfigTransform>$(HelixTransformWebConfigIntermediateLocation)\$(HelixModuleWebConfigTransformFileNamePrefix).config</_MergedHelixWebConfigTransform>
     </PropertyGroup>
 
