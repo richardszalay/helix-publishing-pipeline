@@ -65,7 +65,7 @@
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="Web.Helix.config" />
+    <None Include="Web.Helix.config" Condition="'$(ExcludeHelixTransforms)' != 'true'" />
     <!-- This is intentionally marked as "content" for a unit test -->
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
