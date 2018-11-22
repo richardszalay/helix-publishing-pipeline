@@ -33,8 +33,8 @@
 
   <Target Name="CollectHelixModuleWebConfigTransforms">
     <ItemGroup>
-      <HelixModuleWebConfigTransforms Include="@(HelixModulePaths -> '%(RootDir)%(Directory)\$(HelixModuleWebConfigTransformFileNamePrefix).config')" />
-      <HelixModuleWebConfigTransforms Include="@(HelixModulePaths -> '%(RootDir)%(Directory)\$(HelixModuleWebConfigTransformFileNamePrefix).$(Configuration).config')" />
+      <HelixModuleWebConfigTransforms Include="@(HelixModulePaths -> '%(RootDir)%(Directory)$(HelixModuleWebConfigTransformFileNamePrefix).config')" />
+      <HelixModuleWebConfigTransforms Include="@(HelixModulePaths -> '%(RootDir)%(Directory)$(HelixModuleWebConfigTransformFileNamePrefix).$(Configuration).config')" />
     </ItemGroup>
   </Target>
 
@@ -42,28 +42,30 @@
 
     <ItemGroup>
       <_ProjectWebConfigTransform Include="@(WebConfigsToTransform)" Condition="'%(TransformScope)'==$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\$(ProjectConfigFileName)))" />
-      <_WebConfigTransformsToMerge Include="@(HelixModuleWebConfigTransforms)" Condition="Exists(%(FullPath))" />
+      <_ValidHelixWebConfigTransforms Include="@(HelixModuleWebConfigTransforms)" Condition="Exists(%(FullPath))" />
+      <_WebConfigTransformsToMerge Include="@(_ValidHelixWebConfigTransforms)" />
       <_WebConfigTransformsToMerge Include="@(_ProjectWebConfigTransform->'%(TransformFile)')" Condition="Exists(%(_ProjectWebConfigTransform.TransformFile))" />
 
     </ItemGroup>
 
     <PropertyGroup>
-      <_MergeHelixWebConfigTransforms Condition="'@(HelixModuleWebConfigTransforms)' != '' or '$(IncludeHelixWebConfigTransformInPackage)' == 'true'">true</_MergeHelixWebConfigTransforms>
+      <_MergeHelixWebConfigTransforms Condition="'@(_ValidHelixWebConfigTransforms)' != '' or ('@(_WebConfigTransformsToMerge)' != '' and '$(IncludeHelixWebConfigTransformInPackage)' == 'true')">true</_MergeHelixWebConfigTransforms>
       <_MergedHelixWebConfigTransform>$(HelixTransformWebConfigIntermediateLocation)\$(HelixModuleWebConfigTransformFileNamePrefix).config</_MergedHelixWebConfigTransform>
     </PropertyGroup>
+
+    <Warning Condition="'$(_MergeHelixWebConfigTransforms)' != 'true' and '$(IncludeHelixWebConfigTransformInPackage)' == 'true'"
+      Text="Unable to include Web.config transform in package as there are no transforms to merge" />
 
     <MergeXmlTransforms Transforms="@(_WebConfigTransformsToMerge)"
                         OutputPath="$(_MergedHelixWebConfigTransform)"
                         Condition="'$(_MergeHelixWebConfigTransforms)'=='true'"
                         />
 
-    <ItemGroup Condition="'$(IncludeHelixWebConfigTransformInPackage)' == 'true'">
-      <FilesForPackagingFromProject Include="$(_MergedHelixWebConfigTransform)">
+    <ItemGroup Condition="'$(_MergeHelixWebConfigTransforms)' == 'true'">
+      <FilesForPackagingFromProject Include="$(_MergedHelixWebConfigTransform)" Condition="'$(IncludeHelixWebConfigTransformInPackage)' == 'true'">
         <DestinationRelativePath>$(HelixModuleWebConfigTransformFileNamePrefix).config</DestinationRelativePath>
       </FilesForPackagingFromProject>
-    </ItemGroup>
 
-    <ItemGroup Condition="'$(_MergeHelixWebConfigTransforms)' == 'true'">
       <WebConfigsToTransform Remove="@(_ProjectWebConfigTransform)" />
       <WebConfigsToTransform Include="@(_ProjectWebConfigTransform)">
         <TransformFile>$(_MergedHelixWebConfigTransform)</TransformFile>

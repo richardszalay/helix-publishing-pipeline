@@ -13,6 +13,7 @@ $fixtures = @{
 $count = 1
 
 Describe "Module Web.config transforms" {
+    
     Context "building package with default settings" {
         $projectPath = $fixtures.default.Project1
         $projectDir = Split-Path $projectPath -Parent
@@ -75,6 +76,75 @@ Describe "Module Web.config transforms" {
 
         It "should include merged Web.Helix.config transform in published output" {
             $packageFiles -contains "Web.Helix.config" | Should Be $true
+        }
+    }
+
+    Context "building with no helix transforms" {
+        $projectPath = $fixtures.default.Project1
+        $projectDir = Split-Path $projectPath -Parent
+
+        # This probably deserves it's own fixture, but I was being lazy
+        Move-Item (Join-Path $projectDir "..\..\..\Features\HelixBuild.Feature1\code\Web.Helix.config") (Join-Path $projectDir "..\..\..\Features\HelixBuild.Feature1\code\Web.Helix.ignore")
+        Move-Item (Join-Path $projectDir "..\..\..\Foundation\HelixBuild.Foundation1\code\Web.Helix.config") (Join-Path $projectDir "..\..\..\Foundation\HelixBuild.Foundation1\code\Web.Helix.ignore")
+        
+        Invoke-MSBuild -Project $projectPath -Properties @{
+            "HelixTargetsConfiguration" = "WebRoot"; # This is only supported by the test fixture
+            "Configuration" = "Debug";
+            "DeployOnBuild" = "true";
+            "PublishProfile" = "Package";
+            "DeployAsIisApp" = "false";
+            "ExcludeHelixTransforms" = "true";
+        }
+
+        $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
+
+        $webConfigXml = [xml](Get-MSDeployPackageFileContent -PackagePath $packageFilename -FilePath "Web.config")
+
+        It "should only apply the default transforms" {
+            (Get-WebConfigAppSetting $webConfigXml "Project.ConfigKey") | Should Be "Project.ConfigValue"
+        }
+
+        AfterAll {
+            $projectPath = $fixtures.default.Project1
+            $projectDir = Split-Path $projectPath -Parent
+            Move-Item (Join-Path $projectDir "..\..\..\Features\HelixBuild.Feature1\code\Web.Helix.ignore") (Join-Path $projectDir "..\..\..\Features\HelixBuild.Feature1\code\Web.Helix.config")
+            Move-Item (Join-Path $projectDir "..\..\..\Foundation\HelixBuild.Foundation1\code\Web.Helix.ignore") (Join-Path $projectDir "..\..\..\Foundation\HelixBuild.Foundation1\code\Web.Helix.config")
+        }
+    }
+
+    Context "building with no transforms" {
+        $projectPath = $fixtures.default.Project1
+        $projectDir = Split-Path $projectPath -Parent
+
+        # This probably deserves it's own fixture, but I was being lazy
+        Move-Item (Join-Path $projectDir "..\..\..\Features\HelixBuild.Feature1\code\Web.Helix.config") (Join-Path $projectDir "..\..\..\Features\HelixBuild.Feature1\code\Web.Helix.ignore")
+        Move-Item (Join-Path $projectDir "..\..\..\Foundation\HelixBuild.Foundation1\code\Web.Helix.config") (Join-Path $projectDir "..\..\..\Foundation\HelixBuild.Foundation1\code\Web.Helix.ignore")
+        Move-Item (Join-Path $projectDir "Web.Debug.config") (Join-Path $projectDir "Web.Debug.ignore")
+        
+        Invoke-MSBuild -Project $projectPath -Properties @{
+            "HelixTargetsConfiguration" = "WebRoot"; # This is only supported by the test fixture
+            "Configuration" = "Debug";
+            "DeployOnBuild" = "true";
+            "PublishProfile" = "Package";
+            "DeployAsIisApp" = "false";
+            "ExcludeHelixTransforms" = "true";
+            "ExcludeDefaultTransforms" = "true";
+        }
+
+        $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
+
+        $packageFiles = Get-MSDeployPackageFiles $packageFilename
+
+        It "should succeed" {
+            $packageFiles -contains "Web.config" | Should Be $true
+        }
+
+        AfterAll {
+            $projectPath = $fixtures.default.Project1
+            $projectDir = Split-Path $projectPath -Parent
+            Move-Item (Join-Path $projectDir "..\..\..\Features\HelixBuild.Feature1\code\Web.Helix.ignore") (Join-Path $projectDir "..\..\..\Features\HelixBuild.Feature1\code\Web.Helix.config")
+            Move-Item (Join-Path $projectDir "..\..\..\Foundation\HelixBuild.Foundation1\code\Web.Helix.ignore") (Join-Path $projectDir "..\..\..\Foundation\HelixBuild.Foundation1\code\Web.Helix.config")
+            Move-Item (Join-Path $projectDir "Web.Debug.ignore") (Join-Path $projectDir "Web.Debug.config")
         }
     }
 }
