@@ -65,10 +65,10 @@
     <None Include="Properties\PublishProfiles\Package.pubxml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Web.Debug.config">
+    <None Include="Web.Debug.config" Condition="'$(ExcludeDefaultTransforms)' != 'true'">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="Web.Release.config">
+    <None Include="Web.Release.config" Condition="'$(ExcludeDefaultTransforms)' != 'true'">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
