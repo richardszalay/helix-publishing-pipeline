@@ -78,6 +78,10 @@ Describe "Module configuration" {
             $packageFiles -contains "Views\Web.config" | Should Be $false
         }
 
+        It "should include feature specific Web.config from the packaged project" {
+            $packageFiles -contains "Views\Feature1\Web.config" | Should Be $true
+        }
+
         # The default pipeline excludes config transforms, even if they are marked as Content
         It "should not prevent transforms from being excluded" {
             $packageFiles -contains "Web.Release.config" | Should Be $false
