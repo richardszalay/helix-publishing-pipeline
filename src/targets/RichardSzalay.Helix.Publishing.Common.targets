@@ -40,9 +40,6 @@
       <FilesForPackagingFromHelixModules Remove="@(_HelixModuleWebConfigsToExclude)" />
     </ItemGroup>
 
-    <!--<Message Text="_HelixModuleWebConfigsToExclude   = @(_HelixModuleWebConfigsToExclude->'%(DestinationRelativePath)')" />-->
-    <!--<Message Text="FilesForPackagingFromHelixModules = @(FilesForPackagingFromHelixModules->'%(DestinationRelativePath)')"/>-->  
-
     <ItemGroup>
       <FilesForPackagingFromProject Include="@(FilesForPackagingFromHelixModules)" />
     </ItemGroup>
