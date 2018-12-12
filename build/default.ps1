@@ -73,7 +73,29 @@ task CreateArtifactDir {
   mkdir $artifactDir -Force
 }
 
-task Pack -depends GetNuget,BuildTasks,CreateArtifactDir {
+function Set-NuspecReleaseNotes([string]$path, [string]$releaseNotes)
+{
+  $xml = [xml](Get-Content $path -Raw)
+  $xml.PreserveWhitespace = $true
+
+  if (([string]$xml.package.metadata.releaseNotes) -eq $releaseNotes)
+  {
+    Write-Warning "Release notes have not been updated"
+  }
+
+  $xml.package.metadata.releaseNotes = $releaseNotes
+  $xml.Save($path)
+}
+
+task UpdateReleaseNotes {
+  $releaseNotes = Get-Content "$PSScriptRoot\..\CHANGELOG"
+
+  Get-ChildItem "$PSScriptRoot\..\src\*.nuspec" | Foreach-Object {
+    Set-NuspecReleaseNotes $_.FullName $releaseNotes
+  }
+}
+
+task Pack -depends GetNuget,BuildTasks,CreateArtifactDir,UpdateReleaseNotes {
   Get-ChildItem "$PSScriptRoot\..\src\*.nuspec" | Foreach-Object {
     & $nugetPath pack $_.FullName -Version $packageVersion -OutputDirectory $artifactDir
   }
