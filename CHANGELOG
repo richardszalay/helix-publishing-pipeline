@@ -1,3 +1,5 @@
+1.4.4 - Allow publishing of additional Web.config files #40
+
 1.4.2 - Fix error when no Helix transforms are defined #36
 
 1.4.1 - Fix Web.Helix.config transforms being applied to Views/Web.config #34
