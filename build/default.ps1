@@ -75,15 +75,19 @@ task CreateArtifactDir {
 
 function Set-NuspecReleaseNotes([string]$path, [string]$releaseNotes)
 {
-  $xml = [xml](Get-Content $path -Raw)
+  $xml = New-Object System.Xml.XmlDocument
   $xml.PreserveWhitespace = $true
+  $xml.Load($path)
 
   if (([string]$xml.package.metadata.releaseNotes) -eq $releaseNotes)
   {
     Write-Warning "Release notes have not been updated"
   }
 
-  $xml.package.metadata.releaseNotes = $releaseNotes
+  $nsmgr = New-Object System.Xml.XmlNamespaceManager $xml.NameTable
+  $nsmgr.AddNamespace('nuspec','http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd')
+
+  $xml.SelectSingleNode("//nuspec:package/nuspec:metadata/nuspec:releaseNotes", $nsmgr).InnerText = $releaseNotes
   $xml.Save($path)
 }
 
@@ -95,7 +99,7 @@ task UpdateReleaseNotes {
   }
 }
 
-task Pack -depends GetNuget,BuildTasks,CreateArtifactDir,UpdateReleaseNotes {
+task Pack -depends GetNuget,BuildTasks,CreateArtifactDir {
   Get-ChildItem "$PSScriptRoot\..\src\*.nuspec" | Foreach-Object {
     & $nugetPath pack $_.FullName -Version $packageVersion -OutputDirectory $artifactDir
   }

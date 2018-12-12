@@ -5,7 +5,32 @@
         <version>0.1</version>
         <description>Includes dependent web projects in the ASP.NET Publishing Pipeline</description>
         <authors>Richard Szalay</authors>
-        <releaseNotes></releaseNotes>
+        <releaseNotes>1.4.4 - Allow publishing of additional Web.config files #40
+
+1.4.2 - Fix error when no Helix transforms are defined #36
+
+1.4.1 - Fix Web.Helix.config transforms being applied to Views/Web.config #34
+
+1.4.0 - Module assembly references are now always included #31
+
+1.3.0 - Advanced per-module content scenarios, specifically around mapped target paths #18
+      - Remove additional files by pattern #25
+
+1.2.0 - Support for excluding Sitecore assemblies from publish (individually or from lists)
+
+1.1.0 - Support for per-Module additional content patterns (assets/**/*)
+      - Support for packaging the merged Web.Helix.config transform
+      - Support for transforming an external Web.config during publish (FileSystem publish only)
+
+1.0.0 - Module web.config files are no longer published #9
+      - Fix module config files being alternatively removed when deploying to FileSystem #10
+      - Module pubxml files are no longer imported #8
+
+0.8.1 - Exclude module Web.config files from the transform process
+
+0.8.0 - Skip publishing of transform config files that are unchanged in order to avoid an app pool recycle
+
+0.1.0 - Initial release</releaseNotes>
     </metadata>
     
     <files>
