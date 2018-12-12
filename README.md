@@ -199,3 +199,12 @@ This feature is only currently supported when publishing to a FileSystem target,
 Helix Publishing Pipeline has been developed using standard MSBuild conventions. As such, all functionality can be customised or disabled entirely. Review the [target files](src/targets) for specifics.
 
 [1]: https://www.nuget.org/packages/RichardSzalay.Helix.Publishing.WebRoot/
+
+# Contributors
+
+Many thanks to all the members of the community that have contributed PRs to this project:
+
+* [bartlomiejmucha](https://github.com/bartlomiejmucha)
+* [coreyasmith](https://github.com/coreyasmith)
+* [jeneaux](https://github.com/jeneaux)
+* [luuksommers](https://github.com/luuksommers)
