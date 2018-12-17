@@ -19,14 +19,19 @@ Once that's done, there are two steps to enable the Helix Publish Pipeline:
 
 ### Auto-discovering modules
 
-Since Helix solutions tend to expand to a large number of modules, it may be preferable to reference them dynamically. To do this, add the following to the web root `.csproj` file instead of adding references to the modules:
+Since Helix solutions tend to expand to a large number of modules, it may be preferable to reference them dynamically. To do this, remove any explicit project references from your web root and add something like the code below to the a `Directory.Build.props` file in your website project directory. Doing it this way will prevent Visual Studio from expanding the globs when you rename a project.
 
 ```xml
-<ItemGroup>
-  <ProjectReference Include="..\Foundation\*\code\*.csproj" />
-  <ProjectReference Include="..\Feature\*\code\*.csproj" />
-  <ProjectReference Include="..\Project\*\code\*.csproj" />
-</ItemGroup>
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Foundation\*\code\*.csproj" />
+    <ProjectReference Include="..\Feature\*\code\*.csproj" />
+    <ProjectReference Include="..\Project\*\code\*.csproj" />
+  </ItemGroup>
+
+</Project>
 ```
 
 ### Publishing on build
