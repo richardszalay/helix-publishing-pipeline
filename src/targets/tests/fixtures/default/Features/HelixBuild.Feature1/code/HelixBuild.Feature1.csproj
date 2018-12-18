@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Config\Include\HelixBuild.Feature1.config" />
+    <None Include="App_Config\Include\HelixBuild.Foundation1.Helix.config" />
     <Content Include="Views\Feature1\Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
