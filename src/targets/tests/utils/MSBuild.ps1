@@ -57,17 +57,22 @@ function Invoke-MSBuildWithOutput
         $Project,
         [hashtable]$Properties,
         [string]$TargetName,
+        [string]$Name,
         [Parameter(ParameterSetName='ItemOutput')]$OutputItem
     )
 
     $projectFile = (Resolve-Path $Project)
     $outputDataFile = (New-TemporaryFile).FullName
+
+    if (-not $Name) {
+        $Name = $TargetName
+    }
     
     if ($OutputItem) {
-        $projectFile = New-MSBuildTargetsWrapper -TargetsFile $projectFile -TargetName $TargetName -OutputItem $OutputItem -OutputBuffer $outputDataFile
+        $projectFile = New-MSBuildTargetsWrapper -TargetsFile $projectFile -Name $Name -TargetName $TargetName -OutputItem $OutputItem -OutputBuffer $outputDataFile
     }
 
-    Invoke-MSBuild $projectFile -TargetName "Test$TargetName" -Properties $Properties + @{"IsWrapperInstance"="true"} | Out-Null
+    Invoke-MSBuild $projectFile -TargetName "Test$Name" -Properties $Properties + @{"IsWrapperInstance"="true"} | Out-Null
 
     if (-not (Test-Path $outputDataFile)) {
         return @()
@@ -144,6 +149,7 @@ function New-MSBuildTargetsWrapper
 {
     param(
         $TargetsFile,
+        $Name,
         $TargetName,
         $OutputItem,
         $OutputBuffer
@@ -166,7 +172,7 @@ function New-MSBuildTargetsWrapper
               AssemblyFile=`"$PSScriptRoot\..\..\RichardSzalay.Helix.Publishing.Tasks.dll`"
               />
 
-            <Target Name=`"Test$TargetName`" DependsOnTargets=`"$TargetName`">
+            <Target Name=`"Test$Name`" DependsOnTargets=`"$TargetName`">
                 <ItemGroup>
                     <_TestOutputLines Include=`"$returnsValue`" />
                 </ItemGroup>
