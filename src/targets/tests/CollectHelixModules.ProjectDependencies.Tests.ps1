@@ -19,7 +19,7 @@ Describe "CollectHelixModules.ProjectDependencies" {
 
         $result = Invoke-MSBuildWithOutput -Project $projectPath -TargetName "CollectHelixModulesProjectDependencies" -OutputItem "HelixModulePaths"
 
-        $moduleNames = $result | ForEach-Object { Split-Path $_ -Leaf }
+        $moduleNames = $result.Identity | ForEach-Object { Split-Path $_ -Leaf }
 
         It "should include direct dependencies" {
             $moduleNames -contains "HelixBuild.Feature1.csproj" | Should Be $true

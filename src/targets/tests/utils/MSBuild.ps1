@@ -73,7 +73,22 @@ function Invoke-MSBuildWithOutput
         return @()
     }
 
-    return @(Get-Content $outputDataFile)
+    return Convert-FromMSBuildItemsXml @(Get-Content $outputDataFile)
+}
+
+function Convert-FromMSBuildItemsXml
+{
+    param(
+        [xml]$Xml
+    )
+
+    return @(
+        @($Xml.items.item) | %{
+            $h = @{}
+            $_.Attributes | ?{ $_.Name -ne $null } | %{ $h[$_.Name] = $_.Value }
+            return New-Object -Type PSObject -Property $h
+        }
+    )
 }
 
 function Invoke-MSBuild
@@ -141,16 +156,22 @@ function New-MSBuildTargetsWrapper
 
     $returnsValue = "@($OutputItem)"
 
+    
+
     Set-Content $tempFile "
         <Project>
             <Import Project=`"$TargetsFile`" />
+
+            <UsingTask TaskName=`"RichardSzalay.Helix.Publishing.Tasks.WriteItemsToFile`" 
+              AssemblyFile=`"$PSScriptRoot\..\..\RichardSzalay.Helix.Publishing.Tasks.dll`"
+              />
 
             <Target Name=`"Test$TargetName`" DependsOnTargets=`"$TargetName`">
                 <ItemGroup>
                     <_TestOutputLines Include=`"$returnsValue`" />
                 </ItemGroup>
 
-                <WriteLinesToFile File=`"$OutputBuffer`" Lines=`"@(_TestOutputLines)`" Overwrite=`"true`" />
+                <WriteItemsToFile File=`"$OutputBuffer`" Items=`"$returnsValue`" />
             </Target>
         </Project>
     "
