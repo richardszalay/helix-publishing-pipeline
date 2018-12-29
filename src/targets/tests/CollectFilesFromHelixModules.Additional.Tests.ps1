@@ -17,25 +17,25 @@ Describe "CollectFilesFromHelixModules.Additional" {
     Context "when additional files are configured" {
         $projectPath = $fixtures.default.Project1
 
-        $result = Invoke-MSBuildWithOutput -Project $projectPath -Properties @{
+        $result = (Invoke-MSBuildWithOutput -Project $projectPath -Properties @{
             "IncludeAdditionalHelixModulesContent" = "true";
-        } -TargetName "CollectFilesFromHelixModulesAdditional" -OutputItem "FilesForPackagingFromHelixModules -> '%(DestinationRelativePath)'"
+        } -TargetName "CollectFilesFromHelixModulesAdditional" -OutputItem "FilesForPackagingFromHelixModules").DestinationRelativePath
 
         It "should include matching files added without TargetPath" {
             $result -contains "assets\feature1.js" | Should Be $true
         }
 
         It "should include matching files added with TargetPath" {
-            $result -contains "App_Config\Include\HelixBuild.Foundation1.config" | Should Be $true
+            $result -contains "App_Data\unicorn\HelixBuild.Feature1\sub\Content1.yml" | Should Be $true
         }
     }
 
     Context "when additional files are not configured" {
         $projectPath = $fixtures.default.Project1
 
-        $result = Invoke-MSBuildWithOutput -Project $projectPath -Properties @{
+        $result = (Invoke-MSBuildWithOutput -Project $projectPath -Properties @{
             "IncludeAdditionalHelixModulesContent" = "false";
-        } -TargetName "CollectFilesFromHelixModulesAdditional" -OutputItem "FilesForPackagingFromHelixModules -> '%(DestinationRelativePath)'"
+        } -TargetName "CollectFilesFromHelixModulesAdditional" -OutputItem "FilesForPackagingFromHelixModules").DestinationRelativePath
 
         It "should not include additional files" {
             $result -contains "assets\feature1.js" | Should Be $false
