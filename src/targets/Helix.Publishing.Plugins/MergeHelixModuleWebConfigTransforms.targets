@@ -63,8 +63,8 @@
           <TargetFullPath>%(HelixConfigFilesToTransform.FullPath)</TargetFullPath>
       </HelixFileTransformsToMerge>
       <HelixFileTransformsToMerge
-        Include="$(_ConfigFileToTransformAbsolutePrefix).$(Configuration).$(PublishProfile)$(_ConfigFileToTransformExtension)"
-        Condition="Exists('$(_ConfigFileToTransformAbsolutePrefix).$(Configuration).$(PublishProfile)$(_ConfigFileToTransformExtension)')">
+        Include="$(_ConfigFileToTransformAbsolutePrefix).$(PublishProfileName).$(Configuration)$(_ConfigFileToTransformExtension)"
+        Condition="Exists('$(_ConfigFileToTransformAbsolutePrefix).$(PublishProfileName).$(Configuration)$(_ConfigFileToTransformExtension)')">
           <DestinationRelativePath>$(_ConfigFileToTransformRelativePath)</DestinationRelativePath>
           <TargetFullPath>%(HelixConfigFilesToTransform.FullPath)</TargetFullPath>
       </HelixFileTransformsToMerge>
@@ -81,8 +81,8 @@
           <TargetFullPath>%(HelixConfigFilesToTransform.FullPath)</TargetFullPath>
       </HelixFileTransformsToMerge>
       <HelixFileTransformsToMerge
-        Include="$(_ConfigFileToTransformRelativePrefix)$(HelixModuleTransformPrefix).$(PublishProfile).$(Configuration)$(_ConfigFileToTransformExtension)"
-        Condition="Exists('$(_ConfigFileToTransformRelativePrefix)$(HelixModuleTransformPrefix).$(PublishProfile).$(Configuration)$(_ConfigFileToTransformExtension)')">
+        Include="$(_ConfigFileToTransformRelativePrefix)$(HelixModuleTransformPrefix).$(PublishProfileName).$(Configuration)$(_ConfigFileToTransformExtension)"
+        Condition="Exists('$(_ConfigFileToTransformRelativePrefix)$(HelixModuleTransformPrefix).$(PublishProfileName).$(Configuration)$(_ConfigFileToTransformExtension)')">
           <DestinationRelativePath>$(_ConfigFileToTransformRelativePath)</DestinationRelativePath>
           <TargetFullPath>%(HelixConfigFilesToTransform.FullPath)</TargetFullPath>
       </HelixFileTransformsToMerge>
@@ -99,8 +99,8 @@
           <TargetFullPath>%(HelixConfigFilesToTransform.FullPath)</TargetFullPath>
       </HelixFileTransformsToMerge>
       <HelixFileTransformsToMerge
-        Include="@(HelixModulePaths -> '%(RootDir)%(Directory)$(_ConfigFileToTransformRelativePrefix)$(HelixModuleTransformPrefix).$(PublishProfile).$(Configuration)$(_ConfigFileToTransformExtension)')"
-        Condition="Exists('%(RootDir)%(Directory)$(_ConfigFileToTransformRelativePrefix)$(HelixModuleTransformPrefix).$(PublishProfile).$(Configuration)$(_ConfigFileToTransformExtension)')">
+        Include="@(HelixModulePaths -> '%(RootDir)%(Directory)$(_ConfigFileToTransformRelativePrefix)$(HelixModuleTransformPrefix).$(PublishProfileName).$(Configuration)$(_ConfigFileToTransformExtension)')"
+        Condition="Exists('%(RootDir)%(Directory)$(_ConfigFileToTransformRelativePrefix)$(HelixModuleTransformPrefix).$(PublishProfileName).$(Configuration)$(_ConfigFileToTransformExtension)')">
           <DestinationRelativePath>$(_ConfigFileToTransformRelativePath)</DestinationRelativePath>
           <TargetFullPath>%(HelixConfigFilesToTransform.FullPath)</TargetFullPath>
       </HelixFileTransformsToMerge>
