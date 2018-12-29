@@ -2,6 +2,7 @@
 . "$PSScriptRoot/utils/MSBuild.ps1"
 . "$PSScriptRoot/utils/MSDeploy.ps1"
 . "$PSScriptRoot/utils/SitecoreConfig.ps1"
+. "$PSScriptRoot/utils/FileSystem.ps1"
 
 $fixtures = @{
     default = @{
@@ -24,13 +25,11 @@ Describe "Module Web.config transforms" {
             "Configuration" = "Debug";
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
-            "DeployAsIisApp" = "false";
+            "DeployAsIisApp" = "false"
+            
         }
 
         $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
-
-        $packageParameters = Get-MSDeployPackageParameters $packageFilename
-        $packageParameterNames = $packageParameters.Keys
 
         $packageFiles = Get-MSDeployPackageFiles $packageFilename
 
@@ -68,7 +67,7 @@ Describe "Module Web.config transforms" {
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
             "DeployAsIisApp" = "false";
-            "IncludeHelixWebConfigTransformInPackage" = "true";
+            "IncludeHelixWebConfigTransformInPackage" = "true"
         }
 
         $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
@@ -94,7 +93,7 @@ Describe "Module Web.config transforms" {
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
             "DeployAsIisApp" = "false";
-            "ExcludeHelixTransforms" = "true";
+            "ExcludeHelixTransforms" = "true"
         }
 
         $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
@@ -159,7 +158,8 @@ Describe "Module Web.config transforms" {
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
             "DeployAsIisApp" = "false";
-            "AdditionalFilesToTransform" = "App_Config\**\*.config"
+            "AdditionalFilesToTransform" = "App_Config\**\*.config";
+            "CollectWebConfigsToTransform" = "false"
         }
 
         $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
@@ -173,13 +173,15 @@ Describe "Module Web.config transforms" {
         It "includes (Filename).Helix.config from the same directory in other modules" {
             $foundationConfigXml = [xml](Get-MSDeployPackageFileContent -PackagePath $packageFilename -FilePath "App_Config\Include\HelixBuild.Feature1.config")
 
-            (Get-SitecoreSetting $foundationConfigXml "Feature1.Setting1") | Should Be "Value1"
+            (Get-SitecoreSetting $foundationConfigXml "Feature1.Setting1") | Should Be "Project"
         }
 
         It "prefers transform sources in the web root" {
             $viewsConfigXml = [xml](Get-MSDeployPackageFileContent -PackagePath $packageFilename -FilePath "Views\Web.config")
 
             (Get-WebConfigAppSetting $viewsConfigXml "ViewsConfigSetting") | Should Be "ViewsConfigValue"
+
+            (Get-WebConfigAppSetting $viewsConfigXml "Feature1.ViewsConfigSetting") | Should Be "Feature1"
         }
     }
 }

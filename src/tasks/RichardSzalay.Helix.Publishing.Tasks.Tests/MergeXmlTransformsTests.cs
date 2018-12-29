@@ -12,15 +12,15 @@ namespace RichardSzalay.Helix.Publishing.Tasks.Tests
     public class MergeXmlTransformsTests
     {
         [Fact]
-        public void NoTransforms_ReturnsFalse()
+        public void NoTransforms_ReturnsTrue()
         {
-            TestTransformTask(false, null, new string[0]);
+            TestTransformTask(true, null, new string[0], "");
         }
 
         [Fact]
         public void InvalidTransforms_ReturnsFalse()
         {
-            TestTransformTask(false, null, new string[] { "<configuration" });
+            TestTransformTask(false, null, new string[] { "<configuration" }, "<configuration />");
         }
 
         [Fact]
@@ -51,12 +51,16 @@ namespace RichardSzalay.Helix.Publishing.Tasks.Tests
                         </appSettings>
                      </configuration>
                     ",
-                });
+                },
+                targetContent: @"<configuration />"
+                );
         }
 
-        static void TestTransformTask(bool expectedResult, string expectedOutput, string[] inputTransforms)
+        static void TestTransformTask(bool expectedResult, string expectedOutput, string[] inputTransforms, string targetContent)
         {
             var task = new MergeXmlTransforms();
+
+            var targetFile = CreateTempFile(targetContent);
 
             var inputTransformFiles = inputTransforms
                 .Select(CreateTempFile)
@@ -66,6 +70,7 @@ namespace RichardSzalay.Helix.Publishing.Tasks.Tests
 
             try
             {
+                task.Target = new TaskItem(targetFile);
 
                 task.Transforms = inputTransformFiles
                     .Select(path => new TaskItem(path))

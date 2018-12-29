@@ -10,6 +10,9 @@ namespace RichardSzalay.Helix.Publishing.Tasks
     public class MergeXmlTransforms : Task
     {
         [Required]
+        public ITaskItem Target { get; set; }
+
+        [Required]
         public ITaskItem[] Transforms { get; set; }
 
         [Required]
@@ -20,7 +23,7 @@ namespace RichardSzalay.Helix.Publishing.Tasks
 
         public override bool Execute()
         {
-            if (Transforms == null || Transforms.Length == 0)
+            if (Transforms == null)
             {
                 Log.LogError("No transforms were supplied");
                 return false;
@@ -30,7 +33,9 @@ namespace RichardSzalay.Helix.Publishing.Tasks
             {
                 var transformXml = Transforms.Select(item => ParseXmlDocument(item.ItemSpec));
 
-                var mergedTransforms = XmlTransformMerger.Merge(transformXml);
+                var rootElement = ParseXmlDocument(Target.ItemSpec).DocumentElement.LocalName;
+
+                var mergedTransforms = XmlTransformMerger.Merge(rootElement, transformXml);
 
                 EnsureDirectoryExists(Path.GetDirectoryName(OutputPath));
 

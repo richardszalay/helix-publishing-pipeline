@@ -6,10 +6,10 @@ namespace RichardSzalay.Helix.Publishing.Tasks
 {
     public class XmlTransformMerger
     {
-        public static XmlDocument Merge(IEnumerable<XmlDocument> transforms)
+        public static XmlDocument Merge(string rootElement, IEnumerable<XmlDocument> transforms)
         {
             return transforms
-                .Aggregate(CreateEmptyXmlTransform(), MergeXmlDocument);
+                .Aggregate(CreateEmptyXmlTransform(rootElement), MergeXmlDocument);
         }
 
         static XmlDocument MergeXmlDocument(XmlDocument target, XmlDocument source)
@@ -39,14 +39,14 @@ namespace RichardSzalay.Helix.Publishing.Tasks
             return doc;
         }
 
-        static XmlDocument CreateEmptyXmlTransform()
+        static XmlDocument CreateEmptyXmlTransform(string rootElementName)
         {
             var doc = new XmlDocument();
 
             var nsm = new XmlNamespaceManager(doc.NameTable);
             nsm.AddNamespace("xdt", "http://schemas.microsoft.com/XML-Document-Transform");
 
-            doc.AppendChild(doc.CreateElement("configuration"));
+            doc.AppendChild(doc.CreateElement(rootElementName));
 
             return doc;
         }
