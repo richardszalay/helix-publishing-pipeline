@@ -13,7 +13,7 @@
 
     <ItemGroup>
         <FilesForPackagingFromHelixModules Include="@(_FilesForPackagingFromHelixProjects)"
-                                           Condition="'%(TargetPath)' != '$(ProjectConfigFileName)' and '%(TargetPath)' != '$(ProjectConfigTransformFileName)'">
+                                           Condition="!Exists(%(TargetPath))">
             <DestinationRelativePath>%(TargetPath)</DestinationRelativePath>
         </FilesForPackagingFromHelixModules>
     </ItemGroup>

@@ -35,7 +35,7 @@
   <Target Name="CollectFilesFromHelixModules" DependsOnTargets="$(CollectFilesFromHelixModulesDependsOn)">
     <ItemGroup Condition="'$(ExcludeHelixModuleConfigFiles)' == 'true'">
       <_HelixModuleWebConfigsToExclude Include="@(FilesForPackagingFromHelixModules)"
-                                       Condition="'%(DestinationRelativePath)' == '$(ProjectConfigFileName)' OR '%(DestinationRelativePath)' == 'Views\$(ProjectConfigFileName)'" />
+                                       Condition="Exists(%(DestinationRelativePath))" />
 
       <FilesForPackagingFromHelixModules Remove="@(_HelixModuleWebConfigsToExclude)" />
     </ItemGroup>

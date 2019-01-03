@@ -33,26 +33,41 @@
 
     <HelixTransformWebConfigIntermediateOutput Condition="'$(HelixTransformWebConfigIntermediateOutput)' == ''">HelixTransformWebConfig</HelixTransformWebConfigIntermediateOutput>
     <HelixTransformWebConfigIntermediateLocation Condition="'$(HelixTransformWebConfigIntermediateLocation)' == ''">$(_HelixDefaultIntermediateOutputPath)$(HelixTransformWebConfigIntermediateOutput)</HelixTransformWebConfigIntermediateLocation>
+
+    <CollectAdditionalFilesToTransformDependsOn>
+      $(CollectAdditionalFilesToTransformDependsOn);
+      CollectFilesFromHelixModules
+    </CollectAdditionalFilesToTransformDependsOn>
   </PropertyGroup>
 
   <Target Name="CollectAdditionalFilesToTransform" DependsOnTargets="$(CollectAdditionalFilesToTransformDependsOn)">
     <ItemGroup>
-      <HelixConfigFilesToTransform Include="@(Content)" Condition="'%(Extension)'=='.config'">
-        <DestinationRelativePath>%(Identity)</DestinationRelativePath>
-      </HelixConfigFilesToTransform>
-      <HelixConfigFilesToTransform Include="@(FilesForPackagingFromHelixModules)" Condition="'%(Extension)'=='.config' and !Exists('%(DestinationRelativePath)')">
+      <HelixConfigFilesToTransform Include="@(FilesForPackagingFromProject)" Condition="'%(Extension)'=='.config' and '%(Exclude)' != 'true'">
         <DestinationRelativePath>%(DestinationRelativePath)</DestinationRelativePath>
       </HelixConfigFilesToTransform>
     </ItemGroup>
   </Target>
 
   <Target Name="CollectHelixModuleWebConfigTransforms" Outputs="%(HelixConfigFilesToTransform.FullPath)" DependsOnTargets="CollectAdditionalFilesToTransform">
+
+    <PropertyGroup>
+      <_HelixConfigFilesToTransformFullPath>%(HelixConfigFilesToTransform.FullPath)</_HelixConfigFilesToTransformFullPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ReplacementConfigFileToTransform Remove="@(_ReplacementConfigFileToTransform)" />
+      <_ReplacementConfigFileToTransform Include="@(ReplacementFilesForPackaging)" Condition="'%(FullPath)' == '$(_HelixConfigFilesToTransformFullPath)'" />
+    </ItemGroup>
+
     <PropertyGroup>
       <_ConfigFileToTransform>%(HelixConfigFilesToTransform.Directory)</_ConfigFileToTransform>
+      <_IsReplacementTransformSource></_IsReplacementTransformSource>
+      <_IsReplacementTransformSource Condition="'@(_ReplacementConfigFileToTransform)' != ''">true</_IsReplacementTransformSource>
       <_ConfigFileToTransformAbsolutePrefix>%(HelixConfigFilesToTransform.RootDir)%(HelixConfigFilesToTransform.Directory)%(HelixConfigFilesToTransform.Filename)</_ConfigFileToTransformAbsolutePrefix>
       <_ConfigFileToTransformExtension>%(HelixConfigFilesToTransform.Extension)</_ConfigFileToTransformExtension>
       <_ConfigFileToTransformRelativePath>%(HelixConfigFilesToTransform.DestinationRelativePath)</_ConfigFileToTransformRelativePath>
       <_ConfigFileToTransformRelativePrefix>$(_ConfigFileToTransformRelativePath.Substring(0, $([MSBuild]::Subtract($(_ConfigFileToTransformRelativePath.Length), $(_ConfigFileToTransformExtension.Length)))))</_ConfigFileToTransformRelativePrefix>
+      <_ConfigFileToTransformAbsolutePrefix Condition="'$(_IsReplacementTransformSource)' == 'true'">$(_ConfigFileToTransformRelativePrefix)</_ConfigFileToTransformAbsolutePrefix>
     </PropertyGroup>
 
     <ItemGroup>
