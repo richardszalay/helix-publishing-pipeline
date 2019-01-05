@@ -157,6 +157,8 @@
     <MakeDir Directories="$(TransformWebConfigIntermediateLocation)\transformed\$(_ConfigToTransformRelativeDir)"/>
 
     <ItemGroup Condition="'$(_MergeHelixConfigTransforms)' == 'true'">
+      <FilesForPackagingFromProject Remove="@(FilesForPackagingFromProject)" Condition="'%(DestinationRelativePath)' == '$(_ConfigToTransformRelativePath)'" />
+
       <FilesForPackagingFromProject Include="$(_MergedHelixConfigTransform)" Condition="'$(IncludeHelixWebConfigTransformInPackage)' == 'true'">
         <DestinationRelativePath>$(HelixModuleWebConfigTransformFileNamePrefix).config</DestinationRelativePath>
       </FilesForPackagingFromProject>
