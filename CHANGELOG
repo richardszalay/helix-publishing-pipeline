@@ -1,3 +1,5 @@
+1.4.5 - Support for 'title rows' in assembly lists #43
+
 1.4.4 - Allow publishing of additional Web.config files #40
 
 1.4.2 - Fix error when no Helix transforms are defined #36
