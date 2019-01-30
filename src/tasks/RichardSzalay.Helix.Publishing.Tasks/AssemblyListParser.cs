@@ -65,38 +65,40 @@ namespace RichardSzalay.Helix.Publishing.Tasks
         {
             headers = null;
             options = null;
-
+            
             var line = readNonEmptyLine();
 
-            if (line == null)
-                return false;
-
-            if (TryParseOptions(line, out options))
+            while (line != null)
             {
-                line = readNonEmptyLine();
-            }
-
-            if (line == null)
-                return false;
-
-            if (options == null)
-            {
-                var separator = GuessSeparator(line);
-
-                if (separator == null)
+                if (TryParseOptions(line, out options))
                 {
-                    // TODO: Log
-                    return false;
+                    line = readNonEmptyLine();
                 }
 
-                options = new AssemblyListOptions
+                if (line == null)
+                    return false;
+
+                if (options == null)
                 {
-                    Separator = GuessSeparator(line)
-                };
+                    var separator = GuessSeparator(line);
+
+                    if (separator == null)
+                    {
+                        line = readNonEmptyLine();
+                        continue;
+                    }
+
+                    options = new AssemblyListOptions
+                    {
+                        Separator = GuessSeparator(line)
+                    };
+                }
+
+                headers = ParseLine(line, options);
+                return true;
             }
 
-            headers = ParseLine(line, options);
-            return true;
+            return false;
         }
 
         private string[] ParseLine(string line, AssemblyListOptions options)
@@ -112,7 +114,7 @@ namespace RichardSzalay.Helix.Publishing.Tasks
             if (headerLine.Contains(','))
                 return ",";
 
-            throw new ArgumentException("Unable to determine separator");
+            return null;
         }
 
         private bool TryParseOptions(string line, out AssemblyListOptions options)

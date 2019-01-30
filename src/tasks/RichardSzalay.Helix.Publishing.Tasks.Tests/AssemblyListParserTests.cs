@@ -120,6 +120,43 @@ Asm2,2.0,3.0",
         }
 
         [Fact]
+        public void EmptyHeaderRows_AreSkipped()
+        {
+            Test(
+                input: @"
+FileVersion,AssemblyVersion,Assembly
+Asm1,1.0,2.0
+
+Asm2,2.0,3.0",
+
+                expected: new List<AssemblyListEntry>
+                {
+                    CreateAssemblyListEntry("Asm1", "1.0", "2.0"),
+                    CreateAssemblyListEntry("Asm2", "2.0", "3.0")
+                }
+            );
+        }
+
+        [Fact]
+        public void TitleHeaderRows_AreSkipped()
+        {
+            Test(
+                input: @"
+XConnect Assembly List
+FileVersion,AssemblyVersion,Assembly
+Asm1,1.0,2.0
+
+Asm2,2.0,3.0",
+
+                expected: new List<AssemblyListEntry>
+                {
+                    CreateAssemblyListEntry("Asm1", "1.0", "2.0"),
+                    CreateAssemblyListEntry("Asm2", "2.0", "3.0")
+                }
+            );
+        }
+
+        [Fact]
         public void InvalidRows_StopsProcessing()
         {
             Test(
