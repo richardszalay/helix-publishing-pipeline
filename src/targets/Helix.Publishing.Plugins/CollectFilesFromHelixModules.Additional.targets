@@ -3,7 +3,7 @@
     AssemblyFile="$(MSBuildThisFileDirectory)..\RichardSzalay.Helix.Publishing.Tasks.dll"
     />
 
-  <Target Name="CollectFilesFromHelixModulesAdditional" Outputs="%(HelixModulePaths.Identity)" DependsOnTargets="CollectHelixModules">
+  <Target Name="CollectFilesFromHelixModulesAdditional" Outputs="%(HelixModulePaths.Identity)" Condition="'@(HelixModulePaths)' != ''" DependsOnTargets="CollectHelixModules">
 
     <PropertyGroup>
         <_HelixModulePath>%(HelixModulePaths.RootDir)%(HelixModulePaths.Directory)</_HelixModulePath>
