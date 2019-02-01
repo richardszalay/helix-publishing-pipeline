@@ -80,7 +80,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(ExcludeProjectReferences)' != 'true'">
     <ProjectReference Include="..\..\..\Features\HelixBuild.Feature1\code\HelixBuild.Feature1.csproj">
       <Project>{55ed6f62-650d-4c68-89d7-7ce71d76e2a7}</Project>
       <Name>HelixBuild.Feature1</Name>
