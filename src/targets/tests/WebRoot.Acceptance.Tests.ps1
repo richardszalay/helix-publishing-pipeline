@@ -213,4 +213,43 @@ Describe "WebRoot configuration" {
         }
 
     }
+
+    Context "building package with no project references" {
+        $projectPath = $fixtures.default.Project1
+        $projectDir = Split-Path $projectPath -Parent
+        
+        Invoke-MSBuild -Project $projectPath -Properties @{
+            "HelixTargetsConfiguration" = "WebRoot"; # This is only supported by the test fixture
+            "Configuration" = "Debug";
+            "DeployOnBuild" = "true";
+            "PublishProfile" = "Package";
+            "DeployAsIisApp" = "false";
+            "ExcludeProjectReferences" = "true";
+        }
+
+        $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
+
+        $packageParameters = Get-MSDeployPackageParameters $packageFilename
+        $packageParameterNames = $packageParameters.Keys
+
+        $packageFiles = Get-MSDeployPackageFiles $packageFilename
+
+        $webConfigXml = [xml](Get-MSDeployPackageFileContent -PackagePath $packageFilename -FilePath "Web.config")
+
+        It "should include web deploy parameters from the packaged project" {
+            $packageParameterNames -contains "Project-Parameter1" | Should Be $true
+        }
+
+        It "should include content from the packaged project" {
+            $packageFiles -contains "App_Config\Include\HelixBuild.Sample.Web.config" | Should Be $true
+        }
+
+        It "should include Web.config from the packaged project" {
+            (Get-WebConfigAppSetting $webConfigXml "HelixProject") | Should Be "Sample.Web"
+        }
+
+        It "should include standard Web.config transforms from the packaged project" {
+            (Get-WebConfigAppSetting $webConfigXml "Project.ConfigKey") | Should Be "Project.ConfigValue"
+        }
+    }
 }
