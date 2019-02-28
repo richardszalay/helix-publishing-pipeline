@@ -1,0 +1,43 @@
+<Project>
+
+  <PropertyGroup>
+    <CollectHelixModuleMetadata>true</CollectHelixModuleMetadata>
+  </PropertyGroup>
+
+  <UsingTask TaskName="RichardSzalay.Helix.Publishing.Tasks.MatchAdditionalItemMetadata" 
+              AssemblyFile="$(MSBuildThisFileDirectory)..\RichardSzalay.Helix.Publishing.Tasks.dll"
+              Condition="'$(CollectHelixModuleMetadata)'=='true'"
+              />
+
+  <Target Name="CollectHelixModuleMetadata"
+          AfterTargets="CollectHelixModules"
+          DependsOnTargets="CollectHelixModules"
+          Outputs="%(HelixModuleMetadataPatterns.Identity)"
+          Condition="'@(HelixModuleMetadataPatterns)' != ''"
+  >
+  
+    <PropertyGroup>
+      <MatchSourceMetadataName>%(HelixModuleMetadataPatterns.SourceMetadataName)</MatchSourceMetadataName>
+      <MatchSourceMetadataName>Name</MatchSourceMetadataName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_HelixModulePathsWithAdditionalMetadata Remove="@(_HelixModulePathsWithAdditionalMetadata)" />
+    </ItemGroup>
+
+    <MatchAdditionalItemMetadata
+      Condition="'@(HelixModulePaths)' != ''"
+      Items="@(HelixModulePaths)"
+      Pattern="%(HelixModuleMetadataPatterns.Pattern)"
+      SourceMetadataName="$(MatchSourceMetadataName)"
+      >
+      <Output TaskParameter="Output" ItemName="_HelixModulePathsWithAdditionalMetadata" />
+    </MatchAdditionalItemMetadata>
+
+    <ItemGroup Condition="'@(_HelixModulePathsWithAdditionalMetadata)' != ''">
+      <HelixModulePaths Remove="@(HelixModulePaths)" />
+      <HelixModulePaths Include="@(_HelixModulePathsWithAdditionalMetadata)" />
+    </ItemGroup>
+
+  </Target>
+</Project>

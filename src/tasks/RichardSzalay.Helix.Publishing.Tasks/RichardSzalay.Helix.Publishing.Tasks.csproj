@@ -45,12 +45,14 @@
     <Compile Include="AssemblyListEntry.cs" />
     <Compile Include="AssemblyListParser.cs" />
     <Compile Include="IAssemblyListParser.cs" />
+    <Compile Include="MatchAdditionalItemMetadata.cs" />
     <Compile Include="ParseAssemblyLists.cs" />
     <Compile Include="FilterBinaryUnchangedFiles.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="MergeXmlTransforms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolveModuleContentTargetPath.cs" />
+    <Compile Include="WriteItemsToFile.cs" />
     <Compile Include="XmlTransformMerger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

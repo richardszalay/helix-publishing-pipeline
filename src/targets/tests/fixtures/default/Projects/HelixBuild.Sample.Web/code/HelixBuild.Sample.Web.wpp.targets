@@ -8,7 +8,7 @@
 
         <AdditionalFilesForPackagingFromHelixModules Include="Serialization">
             <SourcePath>..\serialization\**\*.yml</SourcePath>
-            <TargetPath>App_Data\unicorn\^(HelixModule.Filename)\^(RecursiveDir)^(Filename)^(Extension)</TargetPath>
+            <TargetPath>App_Data\unicorn\^(HelixModule.Namespace)\^(HelixModule.Layer)\^(HelixModule.Number)\^(RecursiveDir)^(Filename)^(Extension)</TargetPath>
         </AdditionalFilesForPackagingFromHelixModules>
     </ItemGroup>
 
@@ -16,6 +16,12 @@
         <ReplacementFilesForPackaging Include="$(ExternalWebConfigLocation)">
             <DestinationRelativePath>Web.config</DestinationRelativePath>
         </ReplacementFilesForPackaging>
+    </ItemGroup>
+
+    <ItemGroup>
+        <HelixModuleMetadataPatterns Include="Basic">
+            <Pattern>^(?'Namespace'.+)\.(?'Layer'.+)(?'Number'\d+)$</Pattern>
+        </HelixModuleMetadataPatterns>
     </ItemGroup>
 
     <!-- You probably wouldn't use assembly lists to exclude your own projects, but it gives us something to test -->
