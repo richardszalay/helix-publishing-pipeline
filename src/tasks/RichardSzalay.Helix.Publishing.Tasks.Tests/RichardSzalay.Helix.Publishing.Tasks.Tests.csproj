@@ -64,6 +64,7 @@
     <Compile Include="FakeAssemblyParser.cs" />
     <Compile Include="FakeTaskItem.cs" />
     <Compile Include="AssemblyListParserTests.cs" />
+    <Compile Include="MatchAdditionalItemMetadataTests.cs" />
     <Compile Include="ParseAssemblyListsTests.cs" />
     <Compile Include="ParseAssemblyListTests.cs" />
     <Compile Include="FilterBinaryUnchangedFilesTests.cs" />

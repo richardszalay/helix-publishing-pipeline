@@ -59,7 +59,8 @@ Describe "Module configuration" {
         }
 
         It "should include additional module content that have been specified by templated TargetDir" {
-            $packageFiles -contains "App_Data\unicorn\HelixBuild.Feature1\sub\Content1.yml" | Should Be $true
+            $packageFiles | Write-Host
+            $packageFiles -contains "App_Data\unicorn\HelixBuild\Feature\1\sub\Content1.yml" | Should Be $true
         }
 
         It "should not include additional module content that have been specified by path from indirect module dependencies" {
