@@ -5,7 +5,9 @@
         <version>0.1</version>
         <description>Includes dependent web projects in the ASP.NET Publishing Pipeline</description>
         <authors>Richard Szalay</authors>
-        <releaseNotes>1.4.6 - Support for single project solutions #46
+        <releaseNotes>1.5.0 - Support for pattern-based module metadata for advanced content mapping #48
+
+1.4.6 - Support for single project solutions #46
 
 1.4.5 - Support for 'title rows' in assembly lists #43
 

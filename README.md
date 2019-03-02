@@ -175,6 +175,18 @@ A list of standard file metadata names can be found at [MSBuild well-known item 
 </ItemGroup>
 ```
 
+Alternatively, additional module metadata can be extracted based on module naming conventions by defining a `HelixModuleMetadataPatterns` that specifies a Regular Expression with named groups:
+
+```
+<ItemGroup>
+  <!-- eg. AwesomePlatform.Feature.Hero -->
+  <HelixModuleMetadataPatterns Include="Convention">
+    <!-- Now available as ^(HelixModule.Namespace), ^(HelixModule.Layer), and ^(HelixModule.Module) -->
+    <Pattern>^(?'Namespace'.+)\.(?'Layer'.+?)\.(?'Module'.+)$</Pattern>
+  </HelixModuleMetadataPatterns>
+</ItemGroup>
+```
+
 NOTE: `Web.config` files contained in modules are intentionally skipped to avoid issues with long paths as described by [#9](https://github.com/richardszalay/helix-publishing-pipeline/issues/9). This restriction only affects `Web.config` files, not Sitecore config files, and will be removed once a suitable workaround is place.
 
 ### Removing additional files
