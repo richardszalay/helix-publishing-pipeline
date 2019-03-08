@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <RemoveAdditionalFilesFromTarget Condition="'$(RemoveAdditionalFilesFromTarget)' == '' and '$(WebPublishMethod)' == 'FileSystem' and '$(PublishUrl)' != '' and '$(DeleteExistingFiles)' != 'true'">true</RemoveAdditionalFilesFromTarget>
+    <RemoveAdditionalFilesFromTarget Condition="'$(RemoveAdditionalFilesFromTarget)' == '' and '$(DeleteExistingFiles)' != 'true'">true</RemoveAdditionalFilesFromTarget>
   </PropertyGroup>
 
   <PropertyGroup>
