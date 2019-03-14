@@ -11,7 +11,7 @@
     </WebFileSystemPublishDependsOn>
   </PropertyGroup>
 
-  <Target Name="CollectAdditionalFilesToRemoveFromTarget" DependsOnTargets="CollectHelixModules">
+  <Target Name="CollectAdditionalFilesToRemoveFromTarget" DependsOnTargets="CollectHelixModules;PipelinePreDeployCopyAllFilesToOneFolder">
 
     <ItemGroup>
       <_MatchingAdditionalFilesAtTargetBeforePublishSpecs Include="@(AdditionalFilesToRemoveFromTarget -> '$(PublishUrl)\%(TargetPath)')" />
