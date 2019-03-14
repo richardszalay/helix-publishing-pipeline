@@ -1,3 +1,5 @@
+1.5.2 - Fix RemoveAdditionalFilesFromTarget failing in fresh environments #54
+
 1.5.1 - Fix RemoveAdditionalFilesFromTarget not deleting files #52
 
 1.5.0 - Support for pattern-based module metadata for advanced content mapping #48
