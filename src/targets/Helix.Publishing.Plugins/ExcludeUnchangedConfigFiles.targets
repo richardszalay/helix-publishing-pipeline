@@ -10,14 +10,14 @@
               />
 
   <PropertyGroup>
-    <PipelineTransformPhaseDependsOn Condition="'$(ExcludeUnchangedConfigFilesFromPublish)'=='true'">
+    <PipelineTransformPhaseDependsOn Condition="'$(ExcludeUnchangedConfigFilesFromPublish)'=='truasde'">
       $(PipelineTransformPhaseDependsOn);
       ExcludeUnchangedConfigFilesFromPublish
     </PipelineTransformPhaseDependsOn>
   </PropertyGroup>
 
   <!-- Content item (ie csproj) implementation of CollectFilesFromHelixModules -->
-  <Target Name="ExcludeUnchangedConfigFilesFromPublish" DependsOnTargets="CollectHelixModules">
+  <Target Name="ExcludeUnchangedConfigFilesFromPublish" BeforeTargets="PipelineTransformPhase" DependsOnTargets="CollectHelixModules" Condition="'$(ExcludeUnchangedConfigFilesFromPublish)'=='true'">
     <ItemGroup>
       <_ConfigFilesForPotentialExclusion 
         Include="@(FilesForPackagingFromProject)" 
