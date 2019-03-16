@@ -11,10 +11,6 @@
               />
 
   <PropertyGroup>
-    <PreTransformWebConfigDependsOn Condition="'$(MergeHelixModuleWebConfigTransforms)'=='true'">
-      $(PreTransformWebConfigDependsOn);
-      MergeHelixModuleWebConfigTransforms
-    </PreTransformWebConfigDependsOn>
     <MergeHelixModuleWebConfigTransformsDependsOn>
       $(MergeHelixModuleWebConfigTransformsDependsOn);
       CollectHelixModuleWebConfigTransforms
@@ -38,7 +34,7 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="MergeHelixModuleWebConfigTransforms" DependsOnTargets="$(MergeHelixModuleWebConfigTransformsDependsOn)">
+  <Target Name="MergeHelixModuleWebConfigTransforms" BeforeTargets="PreTransformWebConfig" DependsOnTargets="$(MergeHelixModuleWebConfigTransformsDependsOn)" Condition="'$(MergeHelixModuleWebConfigTransforms)'=='true'">
 
     <ItemGroup>
       <_ProjectWebConfigTransform Include="@(WebConfigsToTransform)" Condition="'%(TransformScope)'==$([System.IO.Path]::GetFullPath($(WPPAllFilesInSingleFolder)\$(ProjectConfigFileName)))" />
