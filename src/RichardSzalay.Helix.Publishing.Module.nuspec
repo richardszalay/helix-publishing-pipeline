@@ -5,7 +5,10 @@
         <version>0.1</version>
         <description>Includes dependent web projects in the ASP.NET Publishing Pipeline</description>
         <authors>Richard Szalay</authors>
-        <releaseNotes>1.5.2 - Fix RemoveAdditionalFilesFromTarget failing in fresh environments #54
+        <releaseNotes>1.5.3 - Fix merged transforms (Web.Helix.config) when referenced via PackageReference #56
+      - Fix skipping unchanged transform configs when referenced via PackageReference #56
+
+1.5.2 - Fix RemoveAdditionalFilesFromTarget failing in fresh environments #54
 
 1.5.1 - Fix RemoveAdditionalFilesFromTarget not deleting files #52
 
