@@ -1,4 +1,4 @@
-1.5.2 - Fix merged transforms (Web.Helix.config) when referenced via PackageReference #56
+1.5.4 - Fix merged transforms (Web.Helix.config) when referenced via PackageReference #56
       - Fix skipping unchanged transform configs when referenced via PackageReference #56
 
 1.5.2 - Fix RemoveAdditionalFilesFromTarget failing in fresh environments #54
