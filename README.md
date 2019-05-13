@@ -2,13 +2,15 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/y0reigvxgct4vmgq/branch/master?svg=true)](https://ci.appveyor.com/project/richardszalay/helix-publishing-targets/branch/master) [![NuGet](https://img.shields.io/nuget/v/RichardSzalay.Helix.Publishing.WebRoot.svg)][1]
 
-Helix Publishing Pipeline allows Helix solutions to be published as a single unit, with content from modules (like views and config patches) being automatically included. It also contains optimisations and guidance around local development deployments.
+Helix Publishing Pipeline (HPP) allows Helix solutions to be published as a single unit, with content from modules (like views and config patches) being automatically included. It also contains optimisations and guidance around local development deployments.
 
 Because the project extends the standard Web Publishing Pipeline it should work with any supported target (package, file system, Azure, Docker) via either Visual Studio or the command line.
 
-## Installation
+## Example
 
-This repository contains a [sample solution](examples) with everything pre-configured which can be used as a reference.
+The [Helixbase](https://github.com/muso31/Helixbase) project makes use of a number of HPP features, and so acts a reference to how it can be integrated.
+
+## Installation
 
 Before you begin, choose a project that will act as the web root (i.e., owns the `Web.config`) for publishing. For solutions with multiple "Project" modules, it's best to explicitly create a "Website" project.
 
