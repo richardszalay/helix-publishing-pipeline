@@ -14,7 +14,6 @@ properties {
     $packageVersion = $env:APPVEYOR_BUILD_VERSION
   } else {
     $xunitPath = "$PSScriptRoot\..\src\tasks\packages\xunit.runner.console.2.3.0\tools\net452\xunit.console.exe"
-    $buildTasksDeps = @("Restore")
 
     if (-not $packageVersion) {
       throw "packageVersion must be provided"
@@ -27,6 +26,10 @@ properties {
 task default -depends Test,Pack
 
 task GetNuget {
+  if ($env:CI) {
+    return
+  }
+
   if (-not (Test-Path $nugetPath)) {
     if (-not (Test-Path $toolsDir)) {
         mkdir $toolsDir | Out-Null
@@ -37,11 +40,14 @@ task GetNuget {
 }
 
 task Restore -depends GetNuGet {
+  if ($env:CI) {
+    return
+  }
   & $nugetPath help # To show version
   & $nugetPath restore $tasksSolutionPath
 }
 
-task BuildTasks -depends $buildTasksDeps {
+task BuildTasks -depends Restore {
   & (Get-MSBuildExePath) "$PSScriptRoot\..\src\tasks\RichardSzalay.Helix.Publishing.Tasks.sln" "/P:Configuration=$buildConfiguration" "/m" "/v:m"
 }
 
