@@ -4,12 +4,17 @@
     <RemoveAdditionalFilesFromTarget Condition="'$(RemoveAdditionalFilesFromTarget)' == '' and '$(DeleteExistingFiles)' != 'true'">true</RemoveAdditionalFilesFromTarget>
   </PropertyGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(BuildingInsideVisualStudio)' != 'true'">
     <WebFileSystemPublishDependsOn Condition="'$(RemoveAdditionalFilesFromTarget)'=='true'">
       $(WebFileSystemPublishDependsOn);
       CollectAdditionalFilesToRemoveFromTarget
     </WebFileSystemPublishDependsOn>
   </PropertyGroup>
+
+  <Target Name="VS_CollectAdditionalFilesToRemoveFromTarget"
+        Condition="'$(RemoveAdditionalFilesFromTarget)'=='true' and '$(BuildingInsideVisualStudio)' == 'true'"
+        DependsOnTargets="CollectAdditionalFilesToRemoveFromTarget"
+        BeforeTargets="_CopyWebApplication" />
 
   <Target Name="CollectAdditionalFilesToRemoveFromTarget" DependsOnTargets="CollectHelixModules;PipelinePreDeployCopyAllFilesToOneFolder">
 
