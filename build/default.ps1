@@ -26,10 +26,6 @@ properties {
 task default -depends Test,Pack
 
 task GetNuget {
-  if ($env:CI) {
-    return
-  }
-
   if (-not (Test-Path $nugetPath)) {
     if (-not (Test-Path $toolsDir)) {
         mkdir $toolsDir | Out-Null
