@@ -37,14 +37,19 @@ function Get-VSWherePath
 function Get-MSBuildExePath
 {
     param(
-        $Version = "15.0"
+        [string[]]$Version = @("Current", "15.0")
     )
 
     $path = & (Get-VSWherePath) -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
     if ($path) {
-      $path = join-path $path 'MSBuild\15.0\Bin\MSBuild.exe'
-      if (test-path $path) {
-        return $path
+
+      $path = $Version |
+        Foreach-Object { Join-Path $path "MSBuild\$_\Bin\MSBuild.exe" } |
+        Where-Object { Test-Path $_ } |
+        Select-Object -First 1
+
+      if ($path -ne $null) {
+          return $path
       }
     }
 
