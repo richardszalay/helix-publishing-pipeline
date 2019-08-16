@@ -17,8 +17,8 @@
   >
   
     <PropertyGroup>
+      <!-- The task defaults to the value Name -->
       <MatchSourceMetadataName>%(HelixModuleMetadataPatterns.SourceMetadataName)</MatchSourceMetadataName>
-      <MatchSourceMetadataName>Name</MatchSourceMetadataName>
     </PropertyGroup>
 
     <ItemGroup>
