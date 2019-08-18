@@ -5,7 +5,10 @@
         <version>0.1</version>
         <description>Includes dependent web projects in the ASP.NET Publishing Pipeline</description>
         <authors>Richard Szalay</authors>
-        <releaseNotes>1.5.4 - Fix merged transforms (Web.Helix.config) when referenced via PackageReference #56
+        <releaseNotes>1.5.5 - Fix CollectAdditionalFilesToRemoveFromTarget when run from publish dialog in VS #61
+      - Fix support for HelixModuleMetadataPatterns.SourceMetadataName #66 (thanks luuksommers!)
+
+1.5.4 - Fix merged transforms (Web.Helix.config) when referenced via PackageReference #56
       - Fix skipping unchanged transform configs when referenced via PackageReference #56
 
 1.5.2 - Fix RemoveAdditionalFilesFromTarget failing in fresh environments #54
