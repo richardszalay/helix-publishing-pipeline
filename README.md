@@ -185,6 +185,8 @@ Alternatively, additional module metadata can be extracted based on module namin
   <HelixModuleMetadataPatterns Include="Convention">
     <!-- Now available as ^(HelixModule.Namespace), ^(HelixModule.Layer), and ^(HelixModule.Module) -->
     <Pattern>^(?'Namespace'.+)\.(?'Layer'.+?)\.(?'Module'.+)$</Pattern>
+    <!-- Uncomment the following line to use a different Source to match the regex upon (e.g. FileName) -->
+    <!-- <SourceMetadataName>FileName</SourceMetadataName> -->
   </HelixModuleMetadataPatterns>
 </ItemGroup>
 ```
