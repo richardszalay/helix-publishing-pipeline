@@ -179,7 +179,7 @@ A list of standard file metadata names can be found at [MSBuild well-known item 
 
 Alternatively, additional module metadata can be extracted based on module naming conventions by defining a `HelixModuleMetadataPatterns` that specifies a Regular Expression with named groups:
 
-```
+```xml
 <ItemGroup>
   <!-- eg. AwesomePlatform.Feature.Hero -->
   <HelixModuleMetadataPatterns Include="Convention">
