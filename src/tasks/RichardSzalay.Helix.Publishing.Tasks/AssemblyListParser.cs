@@ -35,7 +35,7 @@ namespace RichardSzalay.Helix.Publishing.Tasks
 
             // TODO: Should we use headers? Investigate available lists for header-consistency
 
-            if (parsedLine.Length != 3)
+            if (parsedLine.Length != options.NumberOfFields)
             {
                 return false;
             }
@@ -95,6 +95,8 @@ namespace RichardSzalay.Helix.Publishing.Tasks
                 }
 
                 headers = ParseLine(line, options);
+                options.NumberOfFields = headers.Length;
+
                 return true;
             }
 
@@ -140,9 +142,10 @@ namespace RichardSzalay.Helix.Publishing.Tasks
         class AssemblyListOptions
         {
             public string Separator;
+            public int NumberOfFields;
 
             public static AssemblyListOptions Default =>
-                new AssemblyListOptions { Separator = "," };
+                new AssemblyListOptions { Separator = ",", NumberOfFields = 3 };
         }
     }
 }

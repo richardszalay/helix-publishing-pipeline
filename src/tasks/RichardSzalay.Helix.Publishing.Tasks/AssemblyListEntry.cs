@@ -5,5 +5,6 @@
         public string Assembly { get; set; }
         public string FileVersion { get; set; }
         public string AssemblyVersion { get; set; }
+        public string InfoVersion { get; set; }
     }
 }
