@@ -172,6 +172,33 @@ Asm3,3.0,4.0",
             );
         }
 
+        [Fact]
+        public void FourHeaders_AreSupported()
+        {
+            Test(
+                input: @"FileVersion,AssemblyVersion,Assembly,InfoVersion
+Asm2,1.0,2.0,3.0
+Asm3,3.0,4.0,5.0",
+
+                expected: new List<AssemblyListEntry>
+                {
+                    CreateAssemblyListEntry("Asm2", "1.0", "2.0","3.0"),
+                    CreateAssemblyListEntry("Asm3", "3.0", "4.0","5.0")
+                }
+            );
+        }
+
+        static AssemblyListEntry CreateAssemblyListEntry(string assembly, string fileVersion, string assemblyVersion, string infoVersion)
+        {
+            return new AssemblyListEntry
+            {
+                Assembly = assembly,
+                FileVersion = fileVersion,
+                AssemblyVersion = assemblyVersion,
+                InfoVersion = infoVersion
+            };
+        }
+
         static AssemblyListEntry CreateAssemblyListEntry(string assembly, string fileVersion, string assemblyVersion)
         {
             return new AssemblyListEntry
