@@ -226,6 +226,7 @@ Helix Publishing Pipeline has been developed using standard MSBuild conventions.
 Many thanks to all the members of the community that have contributed PRs to this project:
 
 * [bartlomiejmucha](https://github.com/bartlomiejmucha)
+* [BasLijten](https://github.com/BasLijten)
 * [coreyasmith](https://github.com/coreyasmith)
 * [jeneaux](https://github.com/jeneaux)
 * [luuksommers](https://github.com/luuksommers)
