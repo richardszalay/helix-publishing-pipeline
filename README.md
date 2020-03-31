@@ -70,15 +70,23 @@ NOTE: When publishing to `FileSystem`, Helix Publishing Pipeline detects unchang
 
 In many cases it may be desirable to exclude from publish the assemblies that ship with Sitecore, either to reduce the size of the deployment artifact, or to reduce the chance of overriding assemblies with incorrect versions.
 
-Helix Publishing Pipeline supports excluding Sitecore assemblies either individually or from assembly lists (text lists for each release, available from SDN).
+Helix Publishing Pipeline supports excluding Sitecore assemblies either individually, from Sitecore Assemblies NuGet packages (available on the [`sc-packages`](https://sitecore.myget.org/gallery/sc-packages) feed, e.g. [`Sitecore.Assemblies.Platform`](https://sitecore.myget.org/feed/sc-packages/package/nuget/Sitecore.Assemblies.Platform)) or from assembly lists (text lists for each release, available from SDN).
 
 PDB and XML documentation files are also excluded.
 
-To exclude assemblies from publish, simply add either assembly lists or individual assemblies to your publish targets:
+To exclude assemblies from publish, you can create a [`.wpp.targets` file](https://docs.microsoft.com/en-us/previous-versions/aspnet/ff398069(v%3Dvs.110)#creating-a-wpptargets-file) and use HPP-provided item groups in any of the following ways:
+
+1. Reference a `Sitecore.Assemblies` NuGet package on your project, and use the `SitecoreAssemblies` item group which it adds to populate `SitecoreAssembliesToExclude`.
+1. Download assembly lists and reference them in `SitecoreAssemblyListsToExclude`.
+1. Add individual assemblies via `SitecoreAssembliesToExclude`.
 
 ```xml
 <!-- In ProjectName.wpp.targets or PublishProfile.wpp.targets -->
 <ItemGroup>
+  <!-- Requires NuGet reference to Sitecore.Assemblies.Platform or another Assemblies package -->
+  <SitecoreAssembliesToExclude Include="@(SitecoreAssemblies)" />
+
+  <!-- Assembly lists -->
   <SitecoreAssemblyListsToExclude Include="Assembly Lists\Sitecore.Platform.Assemblies 9.0.1 rev. 171219.csv" />
   <SitecoreAssemblyListsToExclude Include="Assembly Lists\Sitecore.XConnect.Platform.Assemblies 9.0.1 rev. 171219.csv" />
 
