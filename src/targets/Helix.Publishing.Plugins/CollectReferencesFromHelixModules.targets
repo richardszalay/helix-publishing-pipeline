@@ -15,12 +15,12 @@
     </MSBuild>
 
     <ItemGroup>
-      <ReferencesForPackaginFromHelixProjects Include="@(_ReferencesForPackagingFromHelixProjects)" Condition="'%(_ReferencesForPackagingFromHelixProjects.CopyLocal)'=='true'"/>
+      <ReferencesForPackagingFromHelixProjects Include="@(_ReferencesForPackagingFromHelixProjects)"/>
 
-      <Reference Include="%(ReferencesForPackaginFromHelixProjects.FusionName)">
-        <ResolvedFrom>%(ReferencesForPackaginFromHelixProjects.ResolvedFrom)</ResolvedFrom>
-        <HintPath>%(ReferencesForPackaginFromHelixProjects.FullPath)</HintPath>
-        <Redist>%(ReferencesForPackaginFromHelixProjects.Redist)</Redist>
+      <Reference Include="%(ReferencesForPackagingFromHelixProjects.FusionName)">
+        <ResolvedFrom>%(ReferencesForPackagingFromHelixProjects.ResolvedFrom)</ResolvedFrom>
+        <HintPath>%(ReferencesForPackagingFromHelixProjects.FullPath)</HintPath>
+        <Redist>%(ReferencesForPackagingFromHelixProjects.Redist)</Redist>
         <CopyLocal>true</CopyLocal>
       </Reference>
     </ItemGroup>
