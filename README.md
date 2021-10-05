@@ -133,7 +133,7 @@ The benefits of this method are:
 <ItemGroup>
   <!-- Requires NuGet reference to Sitecore.Assemblies.Platform or another Assemblies package -->
   <SitecoreAssembliesToExclude Include="@(SitecoreAssemblies)" 
-                               Exclude="@(SitecoreHotfixAssemblies" />
+                               Exclude="@(SitecoreHotfixAssemblies)" />
 </ItemGroup>
 ```
 
