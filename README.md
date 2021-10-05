@@ -104,6 +104,39 @@ Individual assemblies can also be whitelisted (for example, if a patched version
 </ItemGroup>>
 ```
 
+Another option for white-listing multiple assemblies when applying a Sitecore patch is to create an ItemGroup with the items and metadata 
+
+```xml
+<ItemGroup>
+  <SitecoreHotfixAssemblies Include="Sitecore.ContentSearch.dll">
+      <Name>Sitecore.ContentSearch.dll</Name>
+      <Version>5.0.0.0</Version>
+      <FileVersion>5.0.0.0</FileVersion>
+      <InfoVersion>5.0.0-r00294</InfoVersion>
+  </SitecoreHotfixAssemblies> 
+  <SitecoreHotfixAssemblies Include="Sitecore.Kernel.dll">
+      <Name>Sitecore.Kernel.dll</Name>
+      <Version>13.0.0.0</Version>
+      <FileVersion>13.0.0.0</FileVersion>
+      <InfoVersion>13.0.0-r00755</InfoVersion>
+  </SitecoreHotfixAssemblies>
+</ItemGroup>
+```
+
+The benefits of this method are:
+
+1. Allows fine-grained control over the version of the dll that's white-listed
+2. Allows for the `ItemGroup` to be packaged up into a `.targets` file (which could be included in a Nuget package) 
+3. Cleaner exclusion rule which looks like this:
+
+```xml
+<ItemGroup>
+  <!-- Requires NuGet reference to Sitecore.Assemblies.Platform or another Assemblies package -->
+  <SitecoreAssembliesToExclude Include="@(SitecoreAssemblies)" 
+                               Exclude="@(SitecoreHotfixAssemblies" />
+</ItemGroup>
+```
+
 ## Extensibility
 
 Unless otherwise specified, customisations should be either made to `ProjectName.wpp.targets` (to apply to all profiles) or `PublishProfileName.wpp.targets` (to apply to a single profile).
