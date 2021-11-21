@@ -141,6 +141,8 @@ The benefits of this method are:
 
 Unless otherwise specified, customisations should be either made to `ProjectName.wpp.targets` (to apply to all profiles) or `PublishProfileName.wpp.targets` (to apply to a single profile).
 
+> Please note that the `PublishProfileName.wpp.targets` must be in the same folder as the `PublishProfileName.pubxml` file and the `ProjectName.wpp.targets` must be in the same folder as your .csproj.
+
 ### Defining `Web.config` transforms
 
 Every module can define their own `Web.Helix.config` transform file to apply config transforms to the web root's `Web.config` file during publishing.
